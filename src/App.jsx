@@ -3,6 +3,8 @@ import "./App.css";
 import Navbar from "./ui/components/Navbar/Navbar";
 import MovieList from "./ui/components/MovieList/MovieList";
 import SearchBar from "./ui/components/SearchBar/SearchBar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -20,11 +22,21 @@ const App = () => {
   };
 
   return (
-    <div className="app">
-      <Navbar />
-      <SearchBar onSearch={handleSearch} />
-      <MovieList movies={movies} />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="app">
+              <Navbar />
+              <SearchBar onSearch={handleSearch} />
+              <MovieList movies={movies} />
+            </div>
+          }
+        />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
