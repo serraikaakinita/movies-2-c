@@ -1,5 +1,5 @@
-/* From Uiverse.io by zymantas-katinas */
-/* .button {
+/* From Uiverse.io by zymantas-katinas  */
+ .button {
   position: relative;
   border: none;
   background: transparent;
@@ -9,8 +9,8 @@
   font-family: sans-serif;
 }
 
-/* Shadow layer */
-/* .button .shadow {
+ /* Shadow layer  */
+ .button .shadow {
   position: absolute;
   top: 0;
   left: 0;
@@ -20,10 +20,10 @@
   border-radius: 8px;
   transform: translateY(2px);
   transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
-} */
+} 
 
-/* Edge layer */
-/* .button .edge {
+ /* Edge layer  */
+ .button .edge {
   position: absolute;
   top: 0;
   left: 0;
@@ -39,8 +39,8 @@
   );
 }
 
-/* Front layer */
-/* .button .front {
+ /* Front layer  */
+.button .front {
   position: relative;
   display: flex;
   align-items: center;
@@ -54,8 +54,8 @@
   transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
-/* Hover and active states */
-/* .button:hover .shadow {
+ /* Hover and active states  */
+ .button:hover .shadow {
   transform: translateY(4px);
   transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
@@ -63,9 +63,9 @@
 .button:hover .front {
   transform: translateY(-6px);
   transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
-} */
+} 
 
-/* .button:active .shadow {
+ .button:active .shadow {
   transform: translateY(1px);
   transition: transform 34ms;
 }
@@ -76,6 +76,6 @@
 }
 
 /* Disable text selection */
-/* .button .front span {
+.button .front span {
   user-select: none;
-}   */
+}  

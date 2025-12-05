@@ -11,7 +11,7 @@ function MovieCard (props) {
                 <h3 className="movie_details_heading">{props.movieName}</h3>
                 <div className="align_center movie_date_rate">
                     <p>{props.movieDate}</p>
-                    <p>{props.movieRating}</p>
+                    <p>{"⭐" + props.movieRating}</p>
                 </div>
                 <p className="movie_description">
                     {props.movieDescription}
