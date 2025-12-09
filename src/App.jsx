@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./ui/components/Navbar/Navbar";
 import MovieList from "./ui/components/MovieList/MovieList";
@@ -9,14 +9,42 @@ import SignupPage from "./pages/SignupPage"; // Νέα εισαγωγή
 
 const App = () => {
   const [movies, setMovies] = useState([]);
-  const handleSearch = async (query) => {
+
+  // Συνάρτηση για φόρτωση των Trending ταινιών (επαναχρησιμοποιήσιμη)
+  const fetchTrendingMovies = async () => {
     try {
+      const response = await fetch(
+        "https://movies2cbackend-production.up.railway.app/api/movies/trending"
+      );
+      const data = await response.json();
+      setMovies(data.results || data); 
+    } catch (error) {
+      console.error("Error fetching trending movies:", error);
+    }
+  };
+
+  // Φόρτωση κατά την εκκίνηση
+  useEffect(() => {
+    fetchTrendingMovies();
+  }, []);
+
+  // Λειτουργία Αναζήτησης
+  const handleSearch = async (query) => {
+    // Αν το πεδίο είναι κενό, φέρε ξανά τις trending ταινίες
+    if (!query || query.trim() === "") {
+      fetchTrendingMovies();
+      return; 
+    }
+
+    try {
+      // Κλήση στο endpoint αναζήτησης ταινίας
       const response = await fetch(
         `https://movies2cbackend-production.up.railway.app/api/search/movie?title=${query}`
       );
 
       const data = await response.json();
-      setMovies(data);
+      // Ενημέρωση της λίστας με τα αποτελέσματα της αναζήτησης
+      setMovies(data.results || data); 
     } catch (error) {
       console.error("Search error:", error);
     }
@@ -28,11 +56,15 @@ const App = () => {
         <Route
           path="/"
           element={
-            <div className="app">
+          <div className="app">
               <Navbar />
+              {/* Περνάμε τη συνάρτηση handleSearch στο SearchBar */}
               <SearchBar onSearch={handleSearch} />
+              
+              {/* Η λίστα εμφανίζει είτε τις trending είτε τα αποτελέσματα αναζήτησης */}
               <MovieList movies={movies} />
             </div>
+            
           }
         />
         <Route path="/login" element={<LoginPage />} />
