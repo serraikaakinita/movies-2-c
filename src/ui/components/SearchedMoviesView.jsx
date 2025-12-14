@@ -6,7 +6,7 @@ function SearchedMoviesView(props) {
     <div className="movie_cards">
       {props.movies.map((movie) => (
         <MovieCard
-          key={movie.id}
+          id={movie.id}
           movieName={movie.title}
           moviePoster={movie.poster_path}
           movieDate={movie.release_date}

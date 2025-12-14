@@ -18,7 +18,7 @@ const Navbar = () => {
       <h1>Movies2c</h1>
 
       <div className="navbar_links">
-        <Link to="/">Home</Link>
+        <Link to="/home">Home</Link>
         <Link to="/">Quizzes</Link>
 
         {isUserLoggedIn ? (

@@ -1,35 +1,108 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import "./MoviePage.css";
+import Navbar from "../ui/components/Navbar/Navbar";
+import Row from "../ui/Row";
+
 function MoviePage() {
-  return <div>MOVIEPAGE</div>;
+  const [movie, setMovie] = useState({});
+  const params = useParams();
+  const id = params.id.slice(1);
+  const [selectedTab, setSelectedTab] = useState("details");
+
+  useEffect(function () {
+    async function getMovieDetails() {
+      const res = await fetch(
+        `https://movies2cbackend-production.up.railway.app/api/movie?id=${id}`
+      );
+      const data = await res.json();
+      console.log(data);
+      setMovie(data);
+    }
+    getMovieDetails();
+  }, []);
+
+  return (
+    <div>
+      <Navbar></Navbar>
+      <Row type="horizontal" margin="1rem" gap="1rem" content="center">
+        <img
+          src={
+            "https://media.themoviedb.org/t/p/w600_and_h900_face/" +
+            movie.poster_path
+          }
+          alt=""
+          className="movie_display_image"
+        />
+        <Row type="vertical">
+          <Row type="horizontal">
+            <h1>{movie.title}</h1>
+            <Row type="vertical" gap="1rem">
+              <p>{"⭐" + movie.vote_average}</p>
+            </Row>
+          </Row>
+          <div className="movie_box_container">
+            <Row type="horizontal">
+              <Row type="horizontal">
+                <div
+                  className={`tab ${
+                    selectedTab === "details" ? "active_tab" : ""
+                  }`}
+                  style={{ borderRadius: "7px 0 0 0" }}
+                  onClick={() => setSelectedTab("details")}
+                >
+                  details
+                </div>
+                <div
+                  className={`tab ${
+                    selectedTab === "comments" ? "active_tab" : ""
+                  }`}
+                  style={{ borderRadius: "0px 0 0 0" }}
+                  onClick={() => setSelectedTab("comments")}
+                >
+                  comments
+                </div>
+              </Row>
+            </Row>
+            {selectedTab === "details" ? (
+              <MovieDetailsView movie={movie} />
+            ) : (
+              <UserComments />
+            )}
+          </div>
+        </Row>
+      </Row>
+    </div>
+  );
 }
-
 export default MoviePage;
-// function MovieDetails({ selectedId, onCloseMovie }) {
-//const [selectedId, setSelectedId] = useState(null);
-//   const [movie, setMovie] = useState({});
-//   const {
-//     overview: overview,
-//     poster_path: poster,
-//     realease_date: realesedate,
-//     title: title,
-//     vote_avarage: vote_av,
-//   } = movie;
 
-//   useEffect(function () {
-//     async function getMovieDetails() {
-//       const res = await fetch(
-//         `https://movies2cbackend-production.up.railway.app/api/search/movie?query=${selectedId}`
-//       );
-//       const data = res.json();
-//       console.log(data);
-//       setMovie(data);
-//     }
-//     getMovieDetails();
-//   }, []);
-//   return (
-//     <div className="details">
-//       <Button onClick={onCloseMovie}></Button>
-//       <img src={poster} alt{`Poster of ${movie}`}></img>
-//       {selectedId}
-//     </div>
-//   );
-// }
+function MovieDetailsView({ movie }) {
+  return (
+    <Row type="vertical" content="center" gap="2rem" margin="1rem">
+      <Row type="horizontal" gap="1rem">
+        <h4>{movie.release_date}</h4>
+        <h4>{movie.runtime}min</h4>
+      </Row>
+      <p>{movie.overview}</p>
+      <Row type="horizonal" gap="0.5rem">
+        <div>genres:</div>
+        {movie.genres?.map((genre, i) => (
+          <div key={genre.name}>
+            {genre.name}
+            {movie.genres.length == i + 1 ? " " : ","}
+          </div>
+        ))}
+      </Row>
+      <iframe
+        src="https://www.youtube.com/embed/68ed3c9162953f2a829dec3f"
+        title="trailer"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </Row>
+  );
+}
+function UserComments() {
+  return <div>test</div>;
+}

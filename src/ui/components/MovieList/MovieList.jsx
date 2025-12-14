@@ -33,7 +33,7 @@ const MovieList = () => {
           {trendingMovies.map((movie, i) => (
             <article style={{ "--i": i }} key={i}>
               <MovieCard
-                key={movie.id}
+                id={movie.id}
                 movieName={movie.title}
                 moviePoster={movie.poster_path}
                 movieDate={movie.release_date}
