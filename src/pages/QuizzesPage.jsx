@@ -4,6 +4,8 @@ import Navbar from "../ui/components/Navbar/Navbar";
 import SearchBar from "../ui/components/SearchBar/SearchBar";
 
 function QuizzesPage() {
+  
+  
   const [query, setQuery] = useState("");
   const [quizzes, setQuizzes] = useState([]);
   const [error, setError] = useState("");
@@ -66,6 +68,11 @@ function QuizzesPage() {
     { id: 4, title: "Επιστημονική Φαντασία", icon: "🚀", color: "#06b6d4" },
     { id: 5, title: "Κωμωδίες", icon: "😂", color: "#f97316" },
     { id: 6, title: "Δράμα & Ρομάντζο", icon: "❤️", color: "#a855f7" },
+   { id: 1, title: "Χόλιγουντ Κλασικά", icon: "🎬", color: "#ef4444" },
+    { id: 2, title: "Νικητές Όσκαρ", icon: "🏆", color: "#f59e0b" },
+    { id: 3, title: "Επιστημονική Φαντασία", icon: "🚀", color: "#06b6d4" },
+    { id: 4, title: "Κωμωδίες", icon: "😂", color: "#f97316" },
+    { id: 5, title: "Δράμα & Ρομάντζο", icon: "❤️", color: "#a855f7" },
   ];
 
   
