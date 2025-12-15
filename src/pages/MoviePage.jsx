@@ -53,6 +53,16 @@ function MoviePage() {
                 >
                   details
                 </div>
+                {/* /////////////////////////////// */}
+                <div
+                  className={`tab ${
+                    selectedTab === "cast" ? "active_tab" : ""
+                  }`}
+                  style={{ borderRadius: "7px 0 0 0" }}
+                  onClick={() => setSelectedTab("cast")}
+                >
+                  cast
+                </div>
                 <div
                   className={`tab ${
                     selectedTab === "comments" ? "active_tab" : ""
@@ -66,8 +76,10 @@ function MoviePage() {
             </Row>
             {selectedTab === "details" ? (
               <MovieDetailsView movie={movie} />
-            ) : (
+            ) : selectedTab === "comments" ? (
               <UserComments />
+            ) : (
+              <MovieCastView/>
             )}
           </div>
         </Row>
@@ -78,6 +90,7 @@ function MoviePage() {
 export default MoviePage;
 
 function MovieDetailsView({ movie }) {
+  console.log(movie);
   return (
     <Row type="vertical" content="center" gap="2rem" margin="1rem">
       <Row type="horizontal" gap="1rem">
@@ -103,6 +116,11 @@ function MovieDetailsView({ movie }) {
     </Row>
   );
 }
+
 function UserComments() {
   return <div>test</div>;
+}
+
+function MovieCastView(){
+  return <div>cast</div>;
 }
