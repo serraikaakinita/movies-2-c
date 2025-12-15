@@ -19,7 +19,7 @@ const Navbar = () => {
 
       <div className="navbar_links">
         <Link to="/home">Home</Link>
-        <Link to="/quizzes">Quizzes</Link> {/* 🔥 ΑΥΤΟ ΕΔΩ */}
+        <Link to="/quizzes">Quizzes</Link> 
 
         {isUserLoggedIn ? (
           <Row gap="0.5rem">
