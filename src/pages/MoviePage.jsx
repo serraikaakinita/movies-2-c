@@ -140,19 +140,19 @@ function MovieCastView({members}){
       </Row>
       {/* //////////////////////////////// */}
       <Row type="horizontal" gap="2rem" margin="1rem">
-        {members.cast?.slice(0,5).map((cast) => (
-           <div key={cast.id} style={{ textAlign: "center" }}>
-            <img
-               src={
-               cast.profile_path ? `https://image.tmdb.org/t/p/w185${cast.profile_path}`: "/no-avatar.png"}
-               alt={cast.name}
-               style={{
-               width: "120px",
-               borderRadius: "10px"
-              }}
-            />
-           </div>
-        ))}
+          {members.cast?.slice(0, 5).map((cast) => (
+       <div key={cast.id} className="actor-container">
+         <img
+         className="actor-image"
+         src={
+             cast.profile_path ? `https://image.tmdb.org/t/p/w185${cast.profile_path}` : "/no-avatar.png" }
+          alt={cast.name}
+          />
+          <div className="actor_details"> 
+            
+          </div>
+        </div>
+      ))}
     </Row>
       {/* ///////////////////////////////////// */}
         <Row type="horizontal" gap="1rem" margin="0.1rem">  
