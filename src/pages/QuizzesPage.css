@@ -1,0 +1,10 @@
+.container {
+  background-color: #0a192f;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.buttonContainer {
+  padding: 10px;
+  margin: 10px;
+}
