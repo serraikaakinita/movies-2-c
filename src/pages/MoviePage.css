@@ -23,13 +23,20 @@
   transition: all 250ms;
 }
 .active_tab {
-  background-color: rgba(78, 78, 83, 0);
+  background-color: rgba(39, 39, 40, 0.477);
 }
-.actor-container {
+.actor_container {
   text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(23, 22, 22, 0.119);
+  transition: 0.3s;
+  border-radius: 7px;
 }
 
-.actor-image {
+.actor_container:hover {
+  box-shadow: 0 8px 16px 0 rgb(0, 0, 0);
+}
+
+.actor_image {
   width: 120px;
   border-radius: 10px;
 }

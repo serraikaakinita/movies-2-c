@@ -138,36 +138,24 @@ function MovieCastView({members}){
       <Row type="horizontal" gap="1rem">
         <h1>Actors</h1>
       </Row>
-      {/* //////////////////////////////// */}
-      <Row type="horizontal" gap="2rem" margin="1rem">
+      <Row type="horizontal" gap="2rem" margin="0.1rem">
           {members.cast?.slice(0, 5).map((cast) => (
-       <div key={cast.id} className="actor-container">
+       <div key={cast.id} className="actor_container">
          <img
-         className="actor-image"
+         className="actor_image"
          src={
              cast.profile_path ? `https://image.tmdb.org/t/p/w185${cast.profile_path}` : "/no-avatar.png" }
           alt={cast.name}
           />
-          <div className="actor_details"> 
-            
-          </div>
+          <h4>{cast.name}</h4>
         </div>
       ))}
     </Row>
-      {/* ///////////////////////////////////// */}
-        <Row type="horizontal" gap="1rem" margin="0.1rem">  
-        {members.cast?.slice(0,5).map((cast,i) => (
-          <div key={cast.name}>
-            {cast.name}
-            {members.cast.length == i + 1? " " : ","}
-          </div>
-        ))}
-        </Row>
-        <Row type="horizontal" gap="2rem" margin="0.1rem">
-          <h1>Directors</h1>
-        </Row>
-        <Row type="horizontal" gap="1rem" margin="0.1rem">  
-        {members.crew?.slice(0,5).map((crew,i) => (
+      <Row type="horizontal" gap="2rem" margin="0.1rem">
+        <h1>Directors</h1>
+      </Row>
+      <Row type="horizontal" gap="1rem" margin="0.1rem">  
+        {members.crew?.slice(0,3).map((crew,i) => (
           <div key={crew.name}>
             {crew.name}
             {members.crew.length == i + 1? " " : ","}

@@ -6,9 +6,7 @@ function MovieCard(props) {
     <a href={`/movie/:${props.id}`} className="movie_card">
       <img
         src={
-          "https://media.themoviedb.org/t/p/w220_and_h330_face/" +
-          props.moviePoster
-        }
+          "https://media.themoviedb.org/t/p/w220_and_h330_face/" + props.moviePoster }
         alt=""
         className="movie_poster"
       />
