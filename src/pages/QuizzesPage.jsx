@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import Row from "../ui/Row";
-import Navbar from "../ui/components/Navbar/Navbar";
-import SearchBar from "../ui/components/SearchBar/SearchBar";
 
 function QuizzesPage() {
   const [query, setQuery] = useState("");
@@ -95,7 +93,6 @@ function QuizzesPage() {
         }}
       />
 
-      <Navbar />
 
       <div style={styles.content}>
         <div style={styles.header}>
@@ -249,7 +246,7 @@ function QuizzesPage() {
 
       <div style={styles.vignette}></div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -304,7 +301,11 @@ const styles = {
       "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)",
     position: "relative",
     overflow: "hidden",
+    marginTop: "-100px",
+    paddingTop: "100px",
+    zIndex:0,
   },
+
   particles: {
     position: "absolute",
     top: 0,

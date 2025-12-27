@@ -4,16 +4,29 @@ import Button from "../ui/Button";
 import Logo from "../ui/components/Logo";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Login } from "../services/authenticationService";
+import { getToken, isTokenExpired, Login } from "../services/authenticationService";
 
-export default function LoginPage() {
+export default function LoginPage({onLogin}) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
   async function handleLogin() {
-    const result = await Login(email, password);
-    console.log(result);
-    navigate("/home");
+    setError("");
+    try {
+      const result = await Login(email, password);
+      console.log(result);
+
+      if(onLogin && result?.user){
+        onLogin(result.user);
+      }
+      
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Login failed");
+    }
   }
 
   return (
@@ -27,14 +40,14 @@ export default function LoginPage() {
             <input
               className="login_input"
               placeholder="Email"
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></input>
             <input
               className="login_input"
               placeholder="Password"
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></input>
@@ -51,7 +64,8 @@ export default function LoginPage() {
             content="center"
             type="horizontal"
           >
-            <Link to="/home" className="home-button-wrapper">
+            {error && <p className="error">{error}</p>}
+            <Link to="/" className="home-button-wrapper">
               <Button>Back</Button>
             </Link>
             <Button onClick={handleLogin}>Login</Button>

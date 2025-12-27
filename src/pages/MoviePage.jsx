@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import "./MoviePage.css";
-import Navbar from "../ui/components/Navbar/Navbar";
 import Row from "../ui/Row";
 
 function MoviePage() {
@@ -36,7 +35,6 @@ function MoviePage() {
 
   return (
     <div>
-      <Navbar></Navbar>
       <Row type="horizontal" margin="1rem" gap="1rem" content="center">
         <img
           src={
@@ -97,6 +95,7 @@ function MoviePage() {
         </Row>
       </Row>
     </div>
+    
   );
 }
 export default MoviePage;

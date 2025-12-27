@@ -1,5 +1,5 @@
 export async function getTrendingMovies() {
-  const url = "movies2cbackend-production.up.railway.app/api/movies/trending";
+  const url = "https://movies2cbackend-production.up.railway.app/api/movies/trending";
   try {
     const response = await fetch(url);
     const data = await response.json();

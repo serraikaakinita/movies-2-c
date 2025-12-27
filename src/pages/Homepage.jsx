@@ -1,75 +1,73 @@
 import { useEffect, useState } from "react";
-import Button from "../ui/Button";
+import { useLocation } from "react-router-dom";
 import Row from "../ui/Row";
 import "./Homepage.css";
-import Navbar from "../ui/components/Navbar/Navbar";
-import SearchBar from "../ui/components/SearchBar/SearchBar";
 import MovieList from "../ui/components/MovieList/MovieList";
 import SearchedMoviesView from "../ui/components/SearchedMoviesView";
 
 function Homepage() {
-  const [query, setQuery] = useState("");
+  const location = useLocation();
+  const[searchTerm, setSearchTerm] = useState("");
   const [movies, setMovies] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(
-    function () {
-      const controller = new AbortController();
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const q = params.get("q") || "";
+    setSearchTerm(q);
+  }, [location.search]);
+
+  useEffect(() => {
+    const trimmed = searchTerm.trim();
+    if (!trimmed) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+
+  const controller = new AbortController();
       async function fetchMovies() {
         try {
           setError("");
 
-          const res = await fetch(
-            `https://movies2cbackend-production.up.railway.app/api/search/movie?name=${query}`,
-            { signal: controller.signal }
-          );
+          const url =
+            `https://movies2cbackend-production.up.railway.app/api/search/movie?name=${encodeURIComponent}`;
+            //`http://localhost:8080/api/search/movie?name=${encodeURIComponent(trimmed)}`;
+          console.log("Fetching...", url)
 
-          if (!res.ok) throw new Error("Something went wrong");
+          const res = await fetch(url,{signal: controller.signal});
+          if (!res.ok) throw new Error("Failed to fetch movies");
 
           const data = await res.json();
-          if (data.Response === "False") throw new Error("Movie not found");
 
-          setMovies(data.results);
-          setError("");
+          const results = Array.isArray(data)
+            ? data
+            : data.results || data.movies || data.Search || [];
+
+          setMovies(results);
         } catch (err) {
           if (err.name !== "AbortError") {
-            console.log(err.message);
-            setError(err.message);
+            console.error("Error:", err.message);
+            setError(err.message || "Something Went Wrong");
           }
-        } finally {
-          //setIsLoading(false);
-        }
+        } 
       }
-
-      if (query.length < 3) {
-        setMovies([]);
-        setError("");
-        return;
-      }
-
+       
       fetchMovies();
 
-      return function () {
-        controller.abort();
-      };
-    },
-    [query]
-  );
+      return () => controller.abort();
+    }, [searchTerm]);
+
 
   return (
     <div>
       <Row type="vertical" content="center">
-        <Navbar />
-        <Row content="center" type="horizontal">
-          <SearchBar query={query} setQuery={setQuery} />
-        </Row>
-
-        {query.length > 3 ? (
+        {searchTerm.trim() ? (
           <SearchedMoviesView movies={movies} />
         ) : (
-          <MovieList />
+          <MovieList/>
         )}
+        {error && <p style={{color: "red"}}>{error}</p>}
       </Row>
     </div>
   );

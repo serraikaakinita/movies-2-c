@@ -1,3 +1,6 @@
+@import url(https://fonts.bunny.net/css?family=abel:400);
+@layer base, demo;
+
 .movie_list_header {
   padding: 10px 30px;
   justify-content: space-between;
@@ -19,10 +22,6 @@
   cursor: pointer;
 }
 
-/* .movie_filter_item.active{
-    border-bottom: 1px solid #e6e6e6;
-    font-weight: 500;
-} */
 
 .movie_sorting {
   border: none;
@@ -52,9 +51,6 @@
   font-size: 1.4rem;
 }
 
-@layer base, demo;
-@import url(https://fonts.bunny.net/css?family=abel:400);
-
 @layer demo {
   .carousel {
     --carousel-duration: 60s;
@@ -63,7 +59,7 @@
     }
     --carousel-width: min(
       100%
-    ); /* note - it will "break" if it gets too wide and there aren't enough items */
+    );
     --carousel-item-width: 190px;
     --carousel-item-height: 320px;
     --carousel-item-gap: 2rem;
@@ -74,7 +70,7 @@
     overflow: clip;
 
     &[mask] {
-      /* fade out on sides */
+ 
       mask-image: linear-gradient(
         to right,
         transparent,
@@ -86,7 +82,7 @@
     &[reverse] > article {
       animation-direction: reverse;
     }
-    /* hover pauses animation */
+ 
     &:hover > article {
       animation-play-state: paused;
     }
@@ -105,7 +101,7 @@
     border-radius: 10px;
     color: light-dark(rgb(49, 65, 88), white);
 
-    /* animation */
+
     will-change: transform;
     animation-name: marquee;
     animation-duration: var(--carousel-duration);
@@ -171,7 +167,6 @@
   }
 }
 
-/* general styling */
 @layer base {
   * {
     box-sizing: border-box;
