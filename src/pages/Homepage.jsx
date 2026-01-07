@@ -4,70 +4,72 @@ import Row from "../ui/Row";
 import "./Homepage.css";
 import MovieList from "../ui/components/MovieList/MovieList";
 import SearchedMoviesView from "../ui/components/SearchedMoviesView";
+import Navbar from "../ui/components/Navbar/Navbar";
+import SearchBar from "../ui/components/SearchBar/SearchBar";
+import Button from "../ui/Button";
 
 function Homepage() {
-  const location = useLocation();
-  const[searchTerm, setSearchTerm] = useState("");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const q = params.get("q") || "";
-    setSearchTerm(q);
-  }, [location.search]);
+  useEffect(
+    function () {
+      const controller = new AbortController();
 
-  useEffect(() => {
-    const trimmed = searchTerm.trim();
-    if (!trimmed) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-
-  const controller = new AbortController();
       async function fetchMovies() {
         try {
           setError("");
 
-          const url =
-            `https://movies2cbackend-production.up.railway.app/api/search/movie?name=${encodeURIComponent}`;
-            //`http://localhost:8080/api/search/movie?name=${encodeURIComponent(trimmed)}`;
-          console.log("Fetching...", url)
+          const res = await fetch(
+            `https://movies2cbackend-production.up.railway.app/api/search/movie?name=${query}`,
+            { signal: controller.signal }
+          );
 
-          const res = await fetch(url,{signal: controller.signal});
-          if (!res.ok) throw new Error("Failed to fetch movies");
+          if (!res.ok) throw new Error("Something went wrong");
 
           const data = await res.json();
+          if (data.Response === "False") throw new Error("Movie not found");
 
-          const results = Array.isArray(data)
-            ? data
-            : data.results || data.movies || data.Search || [];
-
-          setMovies(results);
+          setMovies(data.results);
+          setError("");
         } catch (err) {
           if (err.name !== "AbortError") {
-            console.error("Error:", err.message);
-            setError(err.message || "Something Went Wrong");
+            console.log(err.message);
+            setError(err.message);
           }
-        } 
+        } finally {
+          //setIsLoading(false);
+        }
       }
-       
+
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
       fetchMovies();
 
-      return () => controller.abort();
-    }, [searchTerm]);
-
+      return function () {
+        controller.abort();
+      };
+    },
+    [query]
+  );
 
   return (
     <div>
       <Row type="vertical" content="center">
-        {searchTerm.trim() ? (
+        {/* <Row content="center" type="horizontal">
+          <SearchBar query={query} setQuery={setQuery} />
+        </Row> */}
+
+        {query.length > 3 ? (
           <SearchedMoviesView movies={movies} />
         ) : (
-          <MovieList/>
+          <MovieList />
         )}
-        {error && <p style={{color: "red"}}>{error}</p>}
       </Row>
     </div>
   );

@@ -4,16 +4,16 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import Button from "../../Button";
 import logo from "../../../assets/movies2c-logo.png";
+import SearchBar from "../SearchBar/SearchBar";
 
-const Navbar = ({ user, onLogout }) => {
-  const [open, setOpen] = useState(false);         
+const Navbar = (props) => {
+  const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,9 +24,11 @@ const Navbar = ({ user, onLogout }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const displayName =
-    user?.userName || user?.username || user?.email || "";
+  ////
+  const user = props.user;
+  const onLogout = props.onLogout;
+  ////
+  const displayName = user?.userName || user?.username || user?.email || "";
 
   const avatarLetter =
     user?.username?.[0]?.toUpperCase() ??
@@ -71,19 +73,11 @@ const Navbar = ({ user, onLogout }) => {
 
   return (
     <header className="nav-wrapper">
-      <nav
-        className={
-          "navbar" + (isScrolled ? " navbar--scrolled" : "")
-        }
-      >
+      <nav className={"navbar" + (isScrolled ? " navbar--scrolled" : "")}>
         {/* Logo */}
         <div className="nav-left">
           <NavLink to="/" className="nav-logo" onClick={closeMenu}>
-            <img
-              src={logo}
-              alt="Movies2C logo"
-              className="nav-logo-img"
-            />
+            <img src={logo} alt="Movies2C logo" className="nav-logo-img" />
             <span className="nav-logo-text">MOVIES2C</span>
           </NavLink>
         </div>
@@ -140,7 +134,8 @@ const Navbar = ({ user, onLogout }) => {
         </ul>
 
         <div className="nav-right">
-          {/* search */}
+          <SearchBar query={props.query} setQuery={props.setQuery} />
+          {/* search
           <form
             className={
               "nav-search-wrapper" +
@@ -167,7 +162,7 @@ const Navbar = ({ user, onLogout }) => {
             >
               <HiMiniMagnifyingGlass className="nav-search-icon" />
             </button>
-          </form>
+          </form> */}
 
           {user ? (
             <div className="nav-user dropdown">
@@ -215,9 +210,7 @@ const Navbar = ({ user, onLogout }) => {
 
           {/* BURGER (mobile) */}
           <button
-            className={
-              "nav-burger" + (open ? " nav-burger--open" : "")
-            }
+            className={"nav-burger" + (open ? " nav-burger--open" : "")}
             onClick={toggleMenu}
             aria-label="Toggle navigation menu"
           >
@@ -230,18 +223,14 @@ const Navbar = ({ user, onLogout }) => {
 
       {/* MOBILE MENU */}
       <div
-        className={
-          "nav-mobile-menu" +
-          (open ? " nav-mobile-menu--open" : "")
-        }
+        className={"nav-mobile-menu" + (open ? " nav-mobile-menu--open" : "")}
       >
         <NavLink
           to="/"
           end
           onClick={closeMenu}
           className={({ isActive }) =>
-            "nav-mobile-link" +
-            (isActive ? " nav-mobile-link--active" : "")
+            "nav-mobile-link" + (isActive ? " nav-mobile-link--active" : "")
           }
         >
           Home
@@ -252,8 +241,7 @@ const Navbar = ({ user, onLogout }) => {
           end
           onClick={closeMenu}
           className={({ isActive }) =>
-            "nav-mobile-link" +
-            (isActive ? " nav-mobile-link--active" : "")
+            "nav-mobile-link" + (isActive ? " nav-mobile-link--active" : "")
           }
         >
           Movies
@@ -264,8 +252,7 @@ const Navbar = ({ user, onLogout }) => {
           end
           onClick={closeMenu}
           className={({ isActive }) =>
-            "nav-mobile-link" +
-            (isActive ? " nav-mobile-link--active" : "")
+            "nav-mobile-link" + (isActive ? " nav-mobile-link--active" : "")
           }
         >
           TV Series
@@ -276,8 +263,7 @@ const Navbar = ({ user, onLogout }) => {
           end
           onClick={closeMenu}
           className={({ isActive }) =>
-            "nav-mobile-link" +
-            (isActive ? " nav-mobile-link--active" : "")
+            "nav-mobile-link" + (isActive ? " nav-mobile-link--active" : "")
           }
         >
           Quizzes
