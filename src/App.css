@@ -1,5 +1,158 @@
-.app{
-    display: grid;
-    grid-template-rows: 80px auto;
-    
+.app {
+  display: grid;
+  grid-template-rows: 80px auto;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  margin-top: -80px;
+  padding-top: 80px;
+  z-index: 0;
+}
+
+html {
+  background: #05060b;
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  color: #f8fafc;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  pointer-events: none;
+  z-index: -1;
+
+  background: radial-gradient(
+      circle at var(--b1x, 30%) var(--b1y, 30%),
+      rgba(64, 180, 255, 0.28) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at var(--r1x, 70%) var(--r1y, 30%),
+      rgba(255, 70, 90, 0.34) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at var(--y1x, 50%) var(--y1y, 70%),
+      rgba(255, 190, 90, 0.3) 0%,
+      transparent 20%
+    );
+
+  background-repeat: no-repeat;
+  background-size: 130% 130%;
+  filter: blur(0.9rem);
+
+  animation: lightsOrbit 35s linear infinite;
+}
+
+body::after {
+  content: none;
+}
+
+@keyframes lightsOrbit {
+  0% {
+    --b1x: 30%;
+    --b1y: 30%;
+    --r1x: 70%;
+    --r1y: 30%;
+    --y1x: 50%;
+    --y1y: 70%;
+  }
+
+  10% {
+    --b1x: 24%;
+    --b1y: 34%;
+    --r1x: 76%;
+    --r1y: 35%;
+    --y1x: 55%;
+    --y1y: 65%;
+  }
+
+  20% {
+    --b1x: 22%;
+    --b1y: 40%;
+    --r1x: 78%;
+    --r1y: 42%;
+    --y1x: 60%;
+    --y1y: 70%;
+  }
+
+  30% {
+    --b1x: 26%;
+    --b1y: 48%;
+    --r1x: 72%;
+    --r1y: 50%;
+    --y1x: 56%;
+    --y1y: 78%;
+  }
+
+  40% {
+    --b1x: 34%;
+    --b1y: 52%;
+    --r1x: 64%;
+    --r1y: 54%;
+    --y1x: 48%;
+    --y1y: 82%;
+  }
+
+  50% {
+    --b1x: 42%;
+    --b1y: 50%;
+    --r1x: 56%;
+    --r1y: 50%;
+    --y1x: 42%;
+    --y1y: 78%;
+  }
+
+  60% {
+    --b1x: 48%;
+    --b1y: 44%;
+    --r1x: 50%;
+    --r1y: 44%;
+    --y1x: 38%;
+    --y1y: 70%;
+  }
+
+  70% {
+    --b1x: 52%;
+    --b1y: 36%;
+    --r1x: 54%;
+    --r1y: 36%;
+    --y1x: 44%;
+    --y1y: 62%;
+  }
+
+  80% {
+    --b1x: 46%;
+    --b1y: 28%;
+    --r1x: 60%;
+    --r1y: 28%;
+    --y1x: 52%;
+    --y1y: 60%;
+  }
+
+  90% {
+    --b1x: 38%;
+    --b1y: 26%;
+    --r1x: 66%;
+    --r1y: 26%;
+    --y1x: 52%;
+    --y1y: 65%;
+  }
+
+  100% {
+    --b1x: 30%;
+    --b1y: 30%;
+    --r1x: 70%;
+    --r1y: 30%;
+    --y1x: 50%;
+    --y1y: 70%;
+  }
 }

@@ -1,8 +1,8 @@
+import {Link, useNavigate} from "react-router-dom";
 import "./Signup_Login_Page.css";
 import Row from "../ui/Row";
 import Button from "../ui/Button";
 import Logo from "../ui/components/Logo";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { SignUp } from "../services/authenticationService";
 
@@ -10,10 +10,19 @@ export default function SignupPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [error, setError]= useState("");
 
-  function handleSignup() {
-    const result = SignUp(username, email, password);
-    console.log(result);
+  async function handleSignup() {
+    setError("");
+    try{
+      const result =await SignUp(username, email, password);
+      console.log(result);
+      navigate("/login");
+    } catch (err){
+      console.error(err);
+      setError(err.message || "SignUp failed");
+    }
   }
 
   return (
@@ -34,14 +43,14 @@ export default function SignupPage() {
             <input
               className="login_input"
               placeholder="Email"
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></input>
             <input
               className="login_input"
               placeholder="Password"
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             ></input>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Searchbar.css";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-import Homepage from "../../../pages/Homepage";
 
 function SearchBar(props) {
   return (
@@ -14,7 +13,9 @@ function SearchBar(props) {
         value={props.query}
         onChange={(e) => props.setQuery(e.target.value)}
       ></input>
-      <HiMiniMagnifyingGlass></HiMiniMagnifyingGlass>
+      <button type="submit" className="searchIconButton" aria-label="Search">
+        <HiMiniMagnifyingGlass />
+      </button>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Homepage from "./pages/Homepage";
 import MoviePage from "./pages/MoviePage";
@@ -7,23 +7,80 @@ import QuizzesPage from "./pages/QuizzesPage";
 import QuizPage from "./pages/QuizPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getToken, isTokenExpired, Logout, getStoredUser } from "./services/authenticationService";
+import Navbar from "./ui/components/Navbar/Navbar";
+import { FavoritesProvider } from "./context/FavoritesContext";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Navigate replace to="home" />}></Route>
-        <Route path="home" element={<Homepage></Homepage>}></Route>
-        <Route path="movie/:id" element={<MoviePage></MoviePage>}></Route>
-        <Route path="profile" element={<Profile></Profile>}></Route>
-        <Route path="quizzes" element={<QuizzesPage></QuizzesPage>}></Route>
-        <Route path="quiz" element={<QuizPage></QuizPage>}></Route>
-        <Route path="login" element={<LoginPage></LoginPage>}></Route>
-        <Route path="signup" element={<SignupPage></SignupPage>}></Route>
-      </Routes>
-    </BrowserRouter>
-  );
+
+function getUserFromToken(token){
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return {
+      username: payload.username || payload.email || payload.sub, };
+    } catch (e) {
+      console.error("Failed to parse token", e);
+      return null;
+    }
 }
 
-export default App;
+
+function AppContent() {
+  const [user, setUser] = useState(() => {
+    const token = getToken();
+    if (!token || isTokenExpired(token)) {
+      Logout();
+      return null;
+    }
+
+    const stored = getStoredUser();
+    return stored ?? null;
+  });
+
+  const location = useLocation();
+
+  useEffect(() => {
+    function syncUser() {
+      setUser(getStoredUser());
+    }
+    window.addEventListener("auth_changed", syncUser);
+    return () => window.removeEventListener("auth_changed", syncUser);
+  }, []);
+
+  const handleLogout=() => {
+    Logout();
+    setUser(null);
+  };
+
+  const hideNavbar =
+    location.pathname =="/login" || location.pathname ==="/signup";
+
+  return (
+  <> 
+    {!hideNavbar && <Navbar user={user} onLogout={handleLogout} />}
+    <main className="page-wrapper">
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/home" element={<Homepage />} />
+        <Route path="movie/:id" element={<MoviePage></MoviePage>}></Route>
+        <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+        <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate replace to="/login" />} />
+        <Route path="/quizzes" element={<QuizzesPage></QuizzesPage>}></Route>
+        <Route path="/quiz" element={<QuizPage></QuizPage>}></Route>
+        <Route path="/signup" element={<SignupPage></SignupPage>}></Route>
+        <Route path="*" element={<Navigate replace to="/" />}/>
+      </Routes>
+    </main>
+    </>
+  );
+}
+        
+export default function App(){
+  return (
+    <BrowserRouter>
+      <FavoritesProvider>
+      <AppContent></AppContent>
+      </FavoritesProvider>
+    </BrowserRouter>  
+  );
+}

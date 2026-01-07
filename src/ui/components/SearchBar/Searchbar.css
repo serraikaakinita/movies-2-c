@@ -14,3 +14,12 @@
   flex: 1;
   outline: none;
 }
+
+.searchIconButton {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+}

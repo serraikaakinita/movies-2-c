@@ -94,7 +94,6 @@ function QuizzesPage() {
         }}
       />
 
-      <Navbar />
 
       <div className="content">
         <div className="header">

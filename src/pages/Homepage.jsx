@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import Button from "../ui/Button";
+import { useLocation } from "react-router-dom";
 import Row from "../ui/Row";
 import "./Homepage.css";
-import Navbar from "../ui/components/Navbar/Navbar";
-import SearchBar from "../ui/components/SearchBar/SearchBar";
 import MovieList from "../ui/components/MovieList/MovieList";
 import SearchedMoviesView from "../ui/components/SearchedMoviesView";
+import Navbar from "../ui/components/Navbar/Navbar";
+import SearchBar from "../ui/components/SearchBar/SearchBar";
+import Button from "../ui/Button";
 
 function Homepage() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(
     function () {
       const controller = new AbortController();
+
       async function fetchMovies() {
         try {
           setError("");
@@ -60,10 +61,9 @@ function Homepage() {
   return (
     <div>
       <Row type="vertical" content="center">
-        <Navbar />
-        <Row content="center" type="horizontal">
+        {/* <Row content="center" type="horizontal">
           <SearchBar query={query} setQuery={setQuery} />
-        </Row>
+        </Row> */}
 
         {query.length > 3 ? (
           <SearchedMoviesView movies={movies} />
