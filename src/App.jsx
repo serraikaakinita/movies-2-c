@@ -7,7 +7,8 @@ import QuizzesPage from "./pages/QuizzesPage";
 import QuizPage from "./pages/QuizPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import { useEffect } from "react";
+import TestQuizzes from "./pages/TestQuizzes";
+import QuizGame from "./pages/QuizGame";
 
 function App() {
   return (
@@ -19,8 +20,10 @@ function App() {
         <Route path="profile" element={<Profile></Profile>}></Route>
         <Route path="quizzes" element={<QuizzesPage></QuizzesPage>}></Route>
         <Route path="quiz" element={<QuizPage></QuizPage>}></Route>
+        <Route path="quiz/:category" element={<QuizGame></QuizGame>}></Route>
         <Route path="login" element={<LoginPage></LoginPage>}></Route>
         <Route path="signup" element={<SignupPage></SignupPage>}></Route>
+        <Route path="test-quizzes" element={<TestQuizzes></TestQuizzes>}></Route>
       </Routes>
     </BrowserRouter>
   );
