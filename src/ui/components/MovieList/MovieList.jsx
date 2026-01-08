@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./MovieList.css";
 import MovieCard from "./MovieCard";
 import { useEffect } from "react";
+import Banner from "../Banner/Banner";
+import Rowpost from "../Rowpost/Rowpost";
 
 const MovieList = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
@@ -61,12 +63,13 @@ const MovieList = () => {
 
   return (
     <section className="movie_list">
+      <Banner url={`movies/trending`} />
       <header className="align_center movie_list_header">
         <h2 className="align_center movie_list_heading">Popular Movies</h2>
         <div className="align_center movie_list_fs">
-          <ul className="align_center movie_filter">
+          {/* <ul className="align_center movie_filter">
             <li className="movie_filter_item">Trending</li>
-          </ul>
+          </ul> */}
         </div>
       </header>
       <div className="carousel_container">
@@ -102,12 +105,22 @@ const MovieList = () => {
         ))}
       </div> */}
 
-      <header className="align_center movie_list_header">
+      <Rowpost url={`movies/genre?genreId=35`} title="Comedy" />
+
+      <Rowpost url={`movies/genre?genreId=28`} title="Action" />
+
+      <Rowpost url={`movies/genre?genreId=16`} title="Animation" />
+
+      <Rowpost url={`movies/genre?genreId=27`} title="Horror" />
+
+      <Rowpost url={`movies/genre?genreId=80`} title="Crime" />
+
+      {/* <header className="align_center movie_list_header">
         <h2 className="align_center movie_list_heading">Comedy Movies</h2>
         <div className="align_center movie_list_fs">
-          {/* <ul className="align_center movie_filter">
+          <ul className="align_center movie_filter">
             <li className="movie_filter_item">Trending</li>
-          </ul> */}
+          </ul>
         </div>
       </header>
       <div className="carousel_container">
@@ -134,9 +147,9 @@ const MovieList = () => {
       <header className="align_center movie_list_header">
         <h2 className="align_center movie_list_heading">Action Movies</h2>
         <div className="align_center movie_list_fs">
-          {/* <ul className="align_center movie_filter">
+          <ul className="align_center movie_filter">
             <li className="movie_filter_item">Trending</li>
-          </ul> */}
+          </ul>
         </div>
       </header>
       <div className="carousel_container">
@@ -163,9 +176,9 @@ const MovieList = () => {
       <header className="align_center movie_list_header">
         <h2 className="align_center movie_list_heading">Animation Movies</h2>
         <div className="align_center movie_list_fs">
-          {/* <ul className="align_center movie_filter">
+          <ul className="align_center movie_filter">
             <li className="movie_filter_item">Trending</li>
-          </ul> */}
+          </ul>
         </div>
       </header>
       <div className="carousel_container">
@@ -192,9 +205,9 @@ const MovieList = () => {
       <header className="align_center movie_list_header">
         <h2 className="align_center movie_list_heading">Horror Movies</h2>
         <div className="align_center movie_list_fs">
-          {/* <ul className="align_center movie_filter">
+          <ul className="align_center movie_filter">
             <li className="movie_filter_item">Trending</li>
-          </ul> */}
+          </ul>
         </div>
       </header>
       <div className="carousel_container">
@@ -221,9 +234,9 @@ const MovieList = () => {
       <header className="align_center movie_list_header">
         <h2 className="align_center movie_list_heading">Crime Movies</h2>
         <div className="align_center movie_list_fs">
-          {/* <ul className="align_center movie_filter">
+          <ul className="align_center movie_filter">
             <li className="movie_filter_item">Trending</li>
-          </ul> */}
+          </ul>
         </div>
       </header>
       <div className="carousel_container">
@@ -245,7 +258,7 @@ const MovieList = () => {
             </article>
           ))}
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

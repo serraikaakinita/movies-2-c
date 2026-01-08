@@ -17,13 +17,12 @@
   justify-content: space-between;
   gap: 1rem;
 
-  background: rgba(2, 6, 23, 0.97);    
+  background: rgba(2, 6, 23, 0.3);
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.25);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
   transition: background 180ms ease-out, box-shadow 180ms ease-out;
 }
-
 
 .navbar--scrolled {
   background: rgba(2, 6, 23, 0.9);
@@ -76,14 +75,11 @@
   position: relative;
   padding: 0.45rem 0.9rem;
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: #f8fcff;
   text-decoration: none;
   border-radius: 999px;
-  transition:
-    color 160ms ease-out,
-    background 160ms ease-out,
-    transform 160ms ease-out,
-    box-shadow 160ms ease-out;
+  transition: color 160ms ease-out, background 160ms ease-out,
+    transform 160ms ease-out, box-shadow 160ms ease-out;
 }
 
 .nav-link::before {
@@ -98,9 +94,7 @@
   );
   opacity: 0;
   transform: scale(0.9);
-  transition:
-    opacity 160ms ease-out,
-    transform 160ms ease-out;
+  transition: opacity 160ms ease-out, transform 160ms ease-out;
   z-index: -1;
 }
 
@@ -132,22 +126,20 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  border: none;                  
-  background: none;              
-  padding: 0;                 
+  border: none;
+  background: none;
+  padding: 0;
   min-width: 32px;
   max-width: 32px;
   height: 32px;
   overflow: hidden;
   cursor: pointer;
-  transition:
-    max-width 200ms ease-out,
-    background 160ms ease-out,
+  transition: max-width 200ms ease-out, background 160ms ease-out,
     border-color 160ms ease-out;
 }
 
 .nav-search-wrapper--open {
-  max-width: 320px; 
+  max-width: 320px;
   padding: 0.4rem 0.9rem;
 
   background: radial-gradient(
@@ -157,7 +149,7 @@
     ),
     rgba(15, 23, 42, 0.98);
 
-  border: 1px solid rgba(64, 214, 255, 0.6); 
+  border: 1px solid rgba(64, 214, 255, 0.6);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
 
   transform: translateY(-1px);
@@ -171,9 +163,7 @@
   width: 0;
   opacity: 0;
   transform: translateX(4px);
-  transition:
-    width 200ms ease-out,
-    opacity 150ms ease-out,
+  transition: width 200ms ease-out, opacity 150ms ease-out,
     transform 150ms ease-out;
   outline: none;
 }
@@ -198,9 +188,7 @@
   height: 26px;
   border-radius: 999px;
   cursor: pointer;
-  transition:
-    background 140ms ease-out,
-    transform 140ms ease-out;
+  transition: background 140ms ease-out, transform 140ms ease-out;
 }
 
 .nav-search-icon {
@@ -233,11 +221,8 @@
   border: 1px solid transparent;
   background: rgba(15, 23, 42, 0.92);
   cursor: pointer;
-  transition:
-    border-color 150ms ease-out,
-    background 150ms ease-out,
-    box-shadow 150ms ease-out,
-    transform 150ms ease-out;
+  transition: border-color 150ms ease-out, background 150ms ease-out,
+    box-shadow 150ms ease-out, transform 150ms ease-out;
 }
 
 .nav-profile:hover {
@@ -280,8 +265,7 @@
   background: rgba(10, 15, 30, 0.96);
   border: 1px solid rgba(148, 163, 184, 0.22);
 
-  box-shadow:
-    0 12px 25px rgba(0, 0, 0, 0.55),
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(64, 214, 255, 0.18);
 
   opacity: 0;
@@ -295,7 +279,6 @@
   pointer-events: auto;
   transform: translateY(0);
 }
-
 
 .dropdown-item {
   display: block;
@@ -318,15 +301,15 @@
 
 /* Log out */
 .dropdown-item--danger {
-  color: #f87171;   
-  font-weight: 500;    
+  color: #f87171;
+  font-weight: 500;
   background: transparent;
   border: none;
 }
 
 .dropdown-item--danger:hover {
-  background: rgba(64, 214, 255, 0.15); 
-  color: #fecaca;                        
+  background: rgba(64, 214, 255, 0.15);
+  color: #fecaca;
 }
 
 .nav-cta {
@@ -349,9 +332,7 @@
   height: 2px;
   border-radius: 999px;
   background: #e5e7eb;
-  transition:
-    transform 160ms ease-out,
-    opacity 160ms ease-out;
+  transition: transform 160ms ease-out, opacity 160ms ease-out;
 }
 
 .nav-burger--open span:nth-child(1) {
@@ -389,9 +370,7 @@
   font-size: 0.9rem;
   text-decoration: none;
   text-align: center;
-  transition:
-    background 140ms ease-out,
-    transform 140ms ease-out,
+  transition: background 140ms ease-out, transform 140ms ease-out,
     border-color 140ms ease-out;
 }
 

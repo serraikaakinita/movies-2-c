@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inconsolata&family=Kanit:wght@300&family=Roboto+Slab:wght@300&display=swap");
+.postersRow {
+  margin: 20px;
+}
+.postersRow h2 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 100;
+}
+
+.posters::-webkit-scrollbar {
+  display: none;
+}
+.posters {
+  display: flex;
+  overflow: scroll;
+  height: 300px;
+  padding-top: 5px;
+}
+.postImg {
+  margin: 10px;
+  max-height: 280px;
+}
+.smPost {
+  margin: 10px;
+  max-height: 200px;
+}
+.smPost:hover {
+  transform: scale(1.1);
+  transition: transform 0.1s ease-in;
+}
+.postersSM {
+  display: flex;
+  overflow: scroll;
+}
+.postersSM::-webkit-scrollbar {
+  display: none;
+}
+.postImg:hover {
+  transform: scale(1.1);
+  transition: transform 0.1s ease-in;
+}
+
+.posters,
+.postersSM {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 16px;
+  padding: 10px 0;
+}
+
+.posters::-webkit-scrollbar,
+.postersSM::-webkit-scrollbar {
+  display: none;
+}
+
+.posters .movie_card,
+.postersSM .movie_card {
+  flex: 0 0 auto;
+  width: 180px;
+  height: 270px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+.posters .movie_poster,
+.postersSM .movie_poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.posters .movie_description,
+.postersSM .movie_description {
+  display: none;
+}
+
+.posters .movie_card:hover,
+.postersSM .movie_card:hover {
+  transform: scale(1.05);
+  transition: transform 0.15s ease-in;
+}
