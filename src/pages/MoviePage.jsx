@@ -3,37 +3,83 @@ import { useParams } from "react-router";
 import "./MoviePage.css";
 import Row from "../ui/Row";
 import Navbar from "../ui/components/Navbar/Navbar";
+import Trailer from "../ui/components/Trailer/Trailer";
+import Button from "../ui/Button";
 
 function MoviePage(props) {
   const [movie, setMovie] = useState({});
   const [members, setMembers] = useState({});
   const params = useParams();
-  const id = params.id.slice(1);
+  //const id = params.id.slice(1);
+  const rawId = params.id;
+  const id = rawId?.startsWith(":") ? rawId.slice(1) : rawId;
+  //
   const [selectedTab, setSelectedTab] = useState("details");
   const [query, setQuery] = useState("");
 
-  useEffect(function () {
-    async function getMovieDetails() {
-      const res = await fetch(
-        `https://movies2cbackend-production.up.railway.app/api/movie?id=${id}`
-      );
-      const data = await res.json();
-      setMovie(data);
-    }
-    getMovieDetails();
-  }, []);
+  const [trailerKey, setTrailerKey] = useState(null);
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
 
-  useEffect(function () {
-    async function getCastDetails() {
-      const res = await fetch(
-        `https://movies2cbackend-production.up.railway.app/api/movie/cast?id=${id}`
-      );
-      const data = await res.json();
-      console.log(data);
-      setMembers(data);
+  useEffect(
+    function () {
+      async function getMovieDetails() {
+        const res = await fetch(
+          `https://movies2cbackend-production.up.railway.app/api/movie?id=${id}`
+        );
+        const data = await res.json();
+        setMovie(data);
+      }
+      getMovieDetails();
+    },
+    [id]
+  );
+
+  useEffect(
+    function () {
+      async function getCastDetails() {
+        const res = await fetch(
+          `https://movies2cbackend-production.up.railway.app/api/movie/cast?id=${id}`
+        );
+        const data = await res.json();
+        console.log(data);
+        setMembers(data);
+      }
+      getCastDetails();
+    },
+    [id]
+  );
+
+  useEffect(() => {
+    async function getTrailer() {
+      try {
+        const res = await fetch(
+          `https://movies2cbackend-production.up.railway.app/api/movie/trailer?id=${id}`
+        );
+        const data = await res.json();
+
+        console.log("TMDB id:", id);
+        console.log("TMDB videos results:", data.results);
+
+        const results = data.results || [];
+
+        const picked =
+          results.find((v) => v.site === "YouTube" && v.type === "Trailer") ||
+          results.find((v) => v.site === "YouTube" && v.type === "Teaser") ||
+          results.find((v) => v.site === "YouTube");
+
+        console.log("Picked video:", picked);
+        console.log("Picked key:", picked?.key);
+
+        setTrailerKey(picked?.key || null);
+      } catch (e) {
+        console.log("Trailer fetch error:", e);
+        setTrailerKey(null);
+      }
     }
-    getCastDetails();
-  }, []);
+
+    if (!id) return;
+    getTrailer();
+  }, [id]);
 
   return (
     <div>
@@ -43,6 +89,12 @@ function MoviePage(props) {
         query={query}
         setQuery={setQuery}
       />
+      {isTrailerOpen && (
+        <Trailer
+          youtubeKey={trailerKey}
+          onClose={() => setIsTrailerOpen(false)}
+        />
+      )}
       <Row type="horizontal" margin="1rem" gap="1rem" content="center">
         <img
           src={
@@ -93,7 +145,11 @@ function MoviePage(props) {
               </Row>
             </Row>
             {selectedTab === "details" ? (
-              <MovieDetailsView movie={movie} />
+              <MovieDetailsView
+                movie={movie}
+                trailerKey={trailerKey}
+                onOpenTrailer={() => setIsTrailerOpen(true)}
+              />
             ) : selectedTab === "comments" ? (
               <UserComments />
             ) : (
@@ -107,7 +163,7 @@ function MoviePage(props) {
 }
 export default MoviePage;
 
-function MovieDetailsView({ movie }) {
+function MovieDetailsView({ movie, trailerKey, onOpenTrailer }) {
   return (
     <Row type="vertical" content="center" gap="2rem" margin="1rem">
       <Row type="horizontal" gap="1rem">
@@ -124,12 +180,12 @@ function MovieDetailsView({ movie }) {
           </div>
         ))}
       </Row>
-      <iframe
-        src="https://www.youtube.com/embed/68ed3c9162953f2a829dec3f"
-        title="trailer"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      ></iframe>
+
+      <Button disabled={!trailerKey} onClick={onOpenTrailer}>
+        ▶ Trailer
+      </Button>
+
+      {!trailerKey && <p>No trailer available.</p>}
     </Row>
   );
 }

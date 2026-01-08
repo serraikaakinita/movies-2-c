@@ -1,0 +1,28 @@
+.trailer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.trailer-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 32px;
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.trailer-iframe {
+  width: 80vw;
+  height: 45vw;
+  max-width: 1000px;
+  max-height: 560px;
+  border: 0;
+}
