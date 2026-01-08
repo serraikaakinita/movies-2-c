@@ -16,37 +16,37 @@ function QuizzesPage() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('http://localhost:8080/api/quizzes/categories');
+        const res = await fetch("http://localhost:8080/api/quizzes/categories");
         const data = await res.json();
-        
+
         const categoryIcons = {
           "Hollywood Classics": "🎬",
           "Oscar Winners": "🏆",
           "Science Fiction": "🚀",
-          "Comedy": "😂",
+          Comedy: "😂",
           "Drama & Romance": "❤️",
-          "Action & Adventure": "💥"
+          "Action & Adventure": "💥",
         };
-        
+
         const categoryColors = {
           "Hollywood Classics": "#ef4444",
           "Oscar Winners": "#f59e0b",
           "Science Fiction": "#06b6d4",
-          "Comedy": "#f97316",
+          Comedy: "#f97316",
           "Drama & Romance": "#a855f7",
-          "Action & Adventure": "#10b981"
+          "Action & Adventure": "#10b981",
         };
-        
+
         const formattedCategories = data.map((category, index) => ({
           id: index + 1,
           title: category,
           icon: categoryIcons[category] || "🎬",
-          color: categoryColors[category] || "#ef4444"
+          color: categoryColors[category] || "#ef4444",
         }));
-        
+
         setCategories(formattedCategories);
       } catch (err) {
-        console.error('Error loading categories:', err);
+        console.error("Error loading categories:", err);
         setCategories([
           { id: 1, title: "Hollywood Classics", icon: "🎬", color: "#ef4444" },
           { id: 2, title: "Oscar Winners", icon: "🏆", color: "#f59e0b" },
@@ -59,7 +59,7 @@ function QuizzesPage() {
         setLoading(false);
       }
     }
-    
+
     fetchCategories();
   }, []);
 
@@ -111,8 +111,8 @@ function QuizzesPage() {
   };
 
   const handleQuizClick = (quiz) => {
-    navigate(`/quiz/${encodeURIComponent(quiz.category)}`, { 
-      state: { quizId: quiz.id } 
+    navigate(`/quiz/${encodeURIComponent(quiz.category)}`, {
+      state: { quizId: quiz.id },
     });
   };
 
@@ -122,7 +122,10 @@ function QuizzesPage() {
   if (loading) {
     return (
       <div className="quizzes-page">
-        <div className="content" style={{ textAlign: 'center', paddingTop: '100px' }}>
+        <div
+          className="content"
+          style={{ textAlign: "center", paddingTop: "100px" }}
+        >
           <div className="title">Loading quizzes...</div>
         </div>
       </div>
@@ -131,6 +134,7 @@ function QuizzesPage() {
 
   return (
     <div className="quizzes-page">
+      <Navbar query={query} setQuery={setQuery} />
       <div className="particles">
         {[...Array(15)].map((_, i) => (
           <div

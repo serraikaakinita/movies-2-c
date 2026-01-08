@@ -8,7 +8,7 @@ import Navbar from "../ui/components/Navbar/Navbar";
 import SearchBar from "../ui/components/SearchBar/SearchBar";
 import Button from "../ui/Button";
 
-function Homepage() {
+function Homepage(props) {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState("");
@@ -64,7 +64,12 @@ function Homepage() {
         {/* <Row content="center" type="horizontal">
           <SearchBar query={query} setQuery={setQuery} />
         </Row> */}
-
+        <Navbar
+          user={props.user}
+          onLogout={props.onLogout}
+          query={query}
+          setQuery={setQuery}
+        />
         {query.length > 3 ? (
           <SearchedMoviesView movies={movies} />
         ) : (

@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import "./App.css";
 import Homepage from "./pages/Homepage";
 import MoviePage from "./pages/MoviePage";
@@ -10,10 +16,14 @@ import SignupPage from "./pages/SignupPage";
 import TestQuizzes from "./pages/TestQuizzes";
 import QuizGame from "./pages/QuizGame";
 import { useEffect, useState } from "react";
-import { getToken, isTokenExpired, Logout, getStoredUser } from "./services/authenticationService";
+import {
+  getToken,
+  isTokenExpired,
+  Logout,
+  getStoredUser,
+} from "./services/authenticationService";
 import Navbar from "./ui/components/Navbar/Navbar";
 import { FavoritesProvider } from "./context/FavoritesContext";
-
 
 function AppContent() {
   const [user, setUser] = useState(() => {
@@ -46,15 +56,31 @@ function AppContent() {
     location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <> 
-      {!hideNavbar && <Navbar user={user} onLogout={handleLogout} />}
+    <>
+      {/* {!hideNavbar && (
+        <Navbar
+          user={user}
+          onLogout={handleLogout}
+        />
+      )} */}
       <main className="page-wrapper">
         <Routes>
           <Route path="/" element={<Navigate replace to="/home" />} />
-          <Route path="/home" element={<Homepage />} />
-          <Route path="/movie/:id" element={<MoviePage />} />
+          <Route
+            path="/home"
+            element={<Homepage user={user} onLogout={handleLogout} />}
+          />
+          <Route
+            path="/movie/:id"
+            element={<MoviePage user={user} onLogout={handleLogout} />}
+          />
           <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-          <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate replace to="/login" />} />
+          <Route
+            path="/profile"
+            element={
+              user ? <Profile user={user} /> : <Navigate replace to="/login" />
+            }
+          />
           <Route path="/quizzes" element={<QuizzesPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:category" element={<QuizGame />} />
@@ -66,13 +92,13 @@ function AppContent() {
     </>
   );
 }
-        
+
 export default function App() {
   return (
     <BrowserRouter>
       <FavoritesProvider>
         <AppContent />
       </FavoritesProvider>
-    </BrowserRouter>  
+    </BrowserRouter>
   );
 }

@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import "./MoviePage.css";
 import Row from "../ui/Row";
+import Navbar from "../ui/components/Navbar/Navbar";
 
-function MoviePage() {
+function MoviePage(props) {
   const [movie, setMovie] = useState({});
   const [members, setMembers] = useState({});
   const params = useParams();
   const id = params.id.slice(1);
   const [selectedTab, setSelectedTab] = useState("details");
+  const [query, setQuery] = useState("");
 
   useEffect(function () {
     async function getMovieDetails() {
@@ -21,8 +23,8 @@ function MoviePage() {
     getMovieDetails();
   }, []);
 
-  useEffect(function(){
-    async function getCastDetails(){
+  useEffect(function () {
+    async function getCastDetails() {
       const res = await fetch(
         `https://movies2cbackend-production.up.railway.app/api/movie/cast?id=${id}`
       );
@@ -35,6 +37,12 @@ function MoviePage() {
 
   return (
     <div>
+      <Navbar
+        user={props.user}
+        onLogout={props.onLogout}
+        query={query}
+        setQuery={setQuery}
+      />
       <Row type="horizontal" margin="1rem" gap="1rem" content="center">
         <img
           src={
@@ -89,13 +97,12 @@ function MoviePage() {
             ) : selectedTab === "comments" ? (
               <UserComments />
             ) : (
-              <MovieCastView members={members}/>
+              <MovieCastView members={members} />
             )}
           </div>
         </Row>
       </Row>
     </div>
-    
   );
 }
 export default MoviePage;
@@ -131,36 +138,39 @@ function UserComments() {
   return <div>test</div>;
 }
 
-function MovieCastView({members}){
-  return(
+function MovieCastView({ members }) {
+  return (
     <Row type="vertical" content="center" gap="1rem" margin="1rem">
       <Row type="horizontal" gap="1rem">
         <h1>Actors</h1>
       </Row>
       <Row type="horizontal" gap="2rem" margin="0.1rem">
-          {members.cast?.slice(0, 5).map((cast) => (
-       <div key={cast.id} className="actor_container">
-         <img
-         className="actor_image"
-         src={
-             cast.profile_path ? `https://image.tmdb.org/t/p/w185${cast.profile_path}` : "/no-avatar.png" }
-          alt={cast.name}
-          />
-          <h4>{cast.name}</h4>
-        </div>
-      ))}
-    </Row>
+        {members.cast?.slice(0, 5).map((cast) => (
+          <div key={cast.id} className="actor_container">
+            <img
+              className="actor_image"
+              src={
+                cast.profile_path
+                  ? `https://image.tmdb.org/t/p/w185${cast.profile_path}`
+                  : "/no-avatar.png"
+              }
+              alt={cast.name}
+            />
+            <h4>{cast.name}</h4>
+          </div>
+        ))}
+      </Row>
       <Row type="horizontal" gap="2rem" margin="0.1rem">
         <h1>Directors</h1>
       </Row>
-      <Row type="horizontal" gap="1rem" margin="0.1rem">  
-        {members.crew?.slice(0,3).map((crew,i) => (
+      <Row type="horizontal" gap="1rem" margin="0.1rem">
+        {members.crew?.slice(0, 3).map((crew, i) => (
           <div key={crew.name}>
             {crew.name}
-            {members.crew.length == i + 1? " " : ","}
+            {members.crew.length == i + 1 ? " " : ","}
           </div>
         ))}
-        </Row>
+      </Row>
     </Row>
   );
 }
