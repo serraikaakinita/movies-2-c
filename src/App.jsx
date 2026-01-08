@@ -7,22 +7,12 @@ import QuizzesPage from "./pages/QuizzesPage";
 import QuizPage from "./pages/QuizPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import TestQuizzes from "./pages/TestQuizzes";
+import QuizGame from "./pages/QuizGame";
 import { useEffect, useState } from "react";
 import { getToken, isTokenExpired, Logout, getStoredUser } from "./services/authenticationService";
 import Navbar from "./ui/components/Navbar/Navbar";
 import { FavoritesProvider } from "./context/FavoritesContext";
-
-
-function getUserFromToken(token){
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return {
-      username: payload.username || payload.email || payload.sub, };
-    } catch (e) {
-      console.error("Failed to parse token", e);
-      return null;
-    }
-}
 
 
 function AppContent() {
@@ -47,39 +37,41 @@ function AppContent() {
     return () => window.removeEventListener("auth_changed", syncUser);
   }, []);
 
-  const handleLogout=() => {
+  const handleLogout = () => {
     Logout();
     setUser(null);
   };
 
   const hideNavbar =
-    location.pathname =="/login" || location.pathname ==="/signup";
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-  <> 
-    {!hideNavbar && <Navbar user={user} onLogout={handleLogout} />}
-    <main className="page-wrapper">
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/home" element={<Homepage />} />
-        <Route path="movie/:id" element={<MoviePage></MoviePage>}></Route>
-        <Route path="/login" element={<LoginPage onLogin={setUser} />} />
-        <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate replace to="/login" />} />
-        <Route path="/quizzes" element={<QuizzesPage></QuizzesPage>}></Route>
-        <Route path="/quiz" element={<QuizPage></QuizPage>}></Route>
-        <Route path="/signup" element={<SignupPage></SignupPage>}></Route>
-        <Route path="*" element={<Navigate replace to="/" />}/>
-      </Routes>
-    </main>
+    <> 
+      {!hideNavbar && <Navbar user={user} onLogout={handleLogout} />}
+      <main className="page-wrapper">
+        <Routes>
+          <Route path="/" element={<Navigate replace to="/home" />} />
+          <Route path="/home" element={<Homepage />} />
+          <Route path="/movie/:id" element={<MoviePage />} />
+          <Route path="/login" element={<LoginPage onLogin={setUser} />} />
+          <Route path="/profile" element={user ? <Profile user={user} /> : <Navigate replace to="/login" />} />
+          <Route path="/quizzes" element={<QuizzesPage />} />
+          <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/quiz/:category" element={<QuizGame />} />
+          <Route path="/test-quizzes" element={<TestQuizzes />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
+      </main>
     </>
   );
 }
         
-export default function App(){
+export default function App() {
   return (
     <BrowserRouter>
       <FavoritesProvider>
-      <AppContent></AppContent>
+        <AppContent />
       </FavoritesProvider>
     </BrowserRouter>  
   );

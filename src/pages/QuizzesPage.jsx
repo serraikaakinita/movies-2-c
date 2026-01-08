@@ -1,13 +1,67 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../ui/components/Navbar/Navbar";
 import SearchBar from "../ui/components/SearchBar/SearchBar";
 import "./QuizzesPage.css";
 
 function QuizzesPage() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [quizzes, setQuizzes] = useState([]);
   const [hoveredId, setHoveredId] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch('http://localhost:8080/api/quizzes/categories');
+        const data = await res.json();
+        
+        const categoryIcons = {
+          "Hollywood Classics": "🎬",
+          "Oscar Winners": "🏆",
+          "Science Fiction": "🚀",
+          "Comedy": "😂",
+          "Drama & Romance": "❤️",
+          "Action & Adventure": "💥"
+        };
+        
+        const categoryColors = {
+          "Hollywood Classics": "#ef4444",
+          "Oscar Winners": "#f59e0b",
+          "Science Fiction": "#06b6d4",
+          "Comedy": "#f97316",
+          "Drama & Romance": "#a855f7",
+          "Action & Adventure": "#10b981"
+        };
+        
+        const formattedCategories = data.map((category, index) => ({
+          id: index + 1,
+          title: category,
+          icon: categoryIcons[category] || "🎬",
+          color: categoryColors[category] || "#ef4444"
+        }));
+        
+        setCategories(formattedCategories);
+      } catch (err) {
+        console.error('Error loading categories:', err);
+        setCategories([
+          { id: 1, title: "Hollywood Classics", icon: "🎬", color: "#ef4444" },
+          { id: 2, title: "Oscar Winners", icon: "🏆", color: "#f59e0b" },
+          { id: 3, title: "Science Fiction", icon: "🚀", color: "#06b6d4" },
+          { id: 4, title: "Comedy", icon: "😂", color: "#f97316" },
+          { id: 5, title: "Drama & Romance", icon: "❤️", color: "#a855f7" },
+          { id: 6, title: "Action & Adventure", icon: "💥", color: "#10b981" },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -15,16 +69,14 @@ function QuizzesPage() {
     async function fetchQuizzes() {
       try {
         const res = await fetch(
-          `https://movies2cbackend-production.up.railway.app/api/search/quizzes?name=${query}`,
+          `http://localhost:8080/api/quizzes?title=${query}`,
           { signal: controller.signal }
         );
 
         if (!res.ok) throw new Error("Something went wrong");
 
         const data = await res.json();
-        if (data.Response === "False") throw new Error("Quiz not found");
-
-        setQuizzes(data.results || []);
+        setQuizzes(data || []);
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error(err.message);
@@ -54,22 +106,31 @@ function QuizzesPage() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const categories = [
-    { id: 1, title: "Hollywood Classics", icon: "🎬", color: "#ef4444" },
-    { id: 2, title: "Oscar Winners", icon: "🏆", color: "#f59e0b" },
-    { id: 3, title: "Science Fiction", icon: "🚀", color: "#06b6d4" },
-    { id: 4, title: "Comedy", icon: "😂", color: "#f97316" },
-    { id: 5, title: "Drama & Romance", icon: "❤️", color: "#a855f7" },
-    { id: 6, title: "Action & Adventure", icon: "💥", color: "#10b981" },
-    { id: 7, title: "My Favorite Movies", icon: "❤️", color: "#ef4444" },
-  ];
+  const handleCategoryClick = (category) => {
+    navigate(`/quiz/${encodeURIComponent(category.title)}`);
+  };
+
+  const handleQuizClick = (quiz) => {
+    navigate(`/quiz/${encodeURIComponent(quiz.category)}`, { 
+      state: { quizId: quiz.id } 
+    });
+  };
 
   const parallaxX = mousePosition.x * 20 - 10;
   const parallaxY = mousePosition.y * 20 - 10;
 
+  if (loading) {
+    return (
+      <div className="quizzes-page">
+        <div className="content" style={{ textAlign: 'center', paddingTop: '100px' }}>
+          <div className="title">Loading quizzes...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="quizzes-page">
-      {/* Particles Background */}
       <div className="particles">
         {[...Array(15)].map((_, i) => (
           <div
@@ -86,14 +147,12 @@ function QuizzesPage() {
         ))}
       </div>
 
-      {/* Mouse Following Light */}
       <div
         className="mouse-light"
         style={{
           transform: `translate(${parallaxX}px, ${parallaxY}px)`,
         }}
       />
-
 
       <div className="content">
         <div className="header">
@@ -113,12 +172,13 @@ function QuizzesPage() {
                   key={quiz.id}
                   className="quiz-card fade-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
+                  onClick={() => handleQuizClick(quiz)}
                 >
                   <div className="quiz-icon">🎬</div>
                   <div>
                     <h4 className="quiz-title">{quiz.title}</h4>
                     <p className="quiz-desc">
-                      {quiz.description || "Movie quiz"}
+                      {quiz.description || `${quiz.category} movie quiz`}
                     </p>
                   </div>
                   <div className="quiz-arrow">→</div>
@@ -127,7 +187,6 @@ function QuizzesPage() {
             </div>
           ) : (
             <div className="main-content">
-              {/* Title Section */}
               <div className="title-container">
                 <h1 className="title">
                   <span className="title-text">
@@ -143,7 +202,6 @@ function QuizzesPage() {
                 <span className="subtitle-icon"> 🍿</span>
               </p>
 
-              {/* Categories Grid */}
               <div className="grid">
                 {categories.map((cat) => {
                   const isHovered = hoveredId === cat.id;
@@ -163,8 +221,8 @@ function QuizzesPage() {
                       }}
                       onMouseEnter={() => setHoveredId(cat.id)}
                       onMouseLeave={() => setHoveredId(null)}
+                      onClick={() => handleCategoryClick(cat)}
                     >
-                      {/* Icon Glow Effect */}
                       <div
                         className="icon-glow"
                         style={{
@@ -173,7 +231,6 @@ function QuizzesPage() {
                         }}
                       />
 
-                      {/* Icon Container */}
                       <div
                         className="icon-wrapper"
                         style={{
@@ -200,7 +257,6 @@ function QuizzesPage() {
 
                       <h3 className="category-title">{cat.title}</h3>
 
-                      {/* Progress Bar */}
                       <div className="progress-bar">
                         <div
                           className="progress-fill"
@@ -211,7 +267,6 @@ function QuizzesPage() {
                         />
                       </div>
 
-                      {/* Arrow */}
                       <div
                         className="arrow"
                         style={{
@@ -224,7 +279,6 @@ function QuizzesPage() {
                         →
                       </div>
 
-                      {/* Shine Effect on Hover */}
                       {isHovered && (
                         <div
                           className="shine-effect"
@@ -238,7 +292,6 @@ function QuizzesPage() {
                 })}
               </div>
 
-              {/* Footer */}
               <div className="footer">
                 <div className="footer-content">
                   <span className="footer-icon">🎞️</span>
@@ -253,7 +306,6 @@ function QuizzesPage() {
         </div>
       </div>
 
-      {/* Vignette Effect */}
       <div className="vignette"></div>
     </div>
   );
