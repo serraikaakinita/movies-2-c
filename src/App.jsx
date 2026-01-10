@@ -15,6 +15,8 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import TestQuizzes from "./pages/TestQuizzes";
 import QuizGame from "./pages/QuizGame";
+import FeedPage from "./pages/FeedPage";
+
 import { useEffect, useState } from "react";
 import {
   getToken,
@@ -65,6 +67,8 @@ function AppContent() {
       )} */}
       <main className="page-wrapper">
         <Routes>
+          <Route path="/feed" element={<FeedPage />} />
+
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route
             path="/home"

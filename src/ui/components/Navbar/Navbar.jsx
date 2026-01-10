@@ -181,11 +181,11 @@ const Navbar = (props) => {
                 </NavLink>
 
                 <NavLink
-                  to="/watchlist"
+                  to="/feed"
                   className="dropdown-item"
                   onClick={closeMenu}
                 >
-                  Watchlist
+                  feed
                 </NavLink>
 
                 <button
@@ -278,12 +278,8 @@ const Navbar = (props) => {
             >
               Profile
             </NavLink>
-            <NavLink
-              to="/watchlist"
-              onClick={closeMenu}
-              className="nav-mobile-link"
-            >
-              Watchlist
+            <NavLink to="/feed" onClick={closeMenu} className="nav-mobile-link">
+              feed
             </NavLink>
             <button
               type="button"
