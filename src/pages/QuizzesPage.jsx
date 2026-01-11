@@ -16,7 +16,7 @@ function QuizzesPage() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch("http://localhost:8080/api/quizzes/categories");
+        const res = await fetch("http://movies2cbackend-production.up.railway.app/api/quizzes/categories");
         const data = await res.json();
 
         const categoryIcons = {
