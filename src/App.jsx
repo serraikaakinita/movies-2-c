@@ -13,7 +13,6 @@ import QuizzesPage from "./pages/QuizzesPage";
 import QuizPage from "./pages/QuizPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import TestQuizzes from "./pages/TestQuizzes";
 import QuizGame from "./pages/QuizGame";
 import FeedPage from "./pages/FeedPage";
 
@@ -88,7 +87,6 @@ function AppContent() {
           <Route path="/quizzes" element={<QuizzesPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:category" element={<QuizGame />} />
-          <Route path="/test-quizzes" element={<TestQuizzes />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
