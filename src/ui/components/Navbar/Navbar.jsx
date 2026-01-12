@@ -131,6 +131,14 @@ const Navbar = (props) => {
               Quizzes
             </NavLink>
           </li>
+
+          <li className="nav-item">
+            <NavLink 
+              to="/analytics"
+              className="nav-links">
+            Analytics
+          </NavLink>
+        </li>
         </ul>
 
         <div className="nav-right">
