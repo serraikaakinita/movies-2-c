@@ -26,6 +26,8 @@ import {
 import Navbar from "./ui/components/Navbar/Navbar";
 import { FavoritesProvider } from "./context/FavoritesContext";
 
+import StatsPage from "./pages/StatsPage";
+
 function AppContent() {
   const [user, setUser] = useState(() => {
     const token = getToken();
@@ -68,6 +70,8 @@ function AppContent() {
         <Routes>
           <Route path="/feed" element={<FeedPage />} />
 
+          <Route path="/analytics" element={<StatsPage user={user} onLogout={handleLogout} />} />
+
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route
             path="/home"
@@ -88,7 +92,7 @@ function AppContent() {
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:category" element={<QuizGame />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<Navigate replace to="/" />} />
+          <Route path="*" element={<Navigate replace to="/" />} />          
         </Routes>
       </main>
     </>
