@@ -131,6 +131,17 @@ const Navbar = (props) => {
               Quizzes
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/actor-match"
+              end
+              className={({ isActive }) =>
+                "nav-link" + (isActive ? " nav-link--active" : "")
+              }
+            >
+              Actor Match
+            </NavLink>
+          </li>
         </ul>
 
         <div className="nav-right">
@@ -207,8 +218,6 @@ const Navbar = (props) => {
               Sign In
             </NavLink>
           )}
-
-          {/* BURGER (mobile) */}
           <button
             className={"nav-burger" + (open ? " nav-burger--open" : "")}
             onClick={toggleMenu}
@@ -220,8 +229,6 @@ const Navbar = (props) => {
           </button>
         </div>
       </nav>
-
-      {/* MOBILE MENU */}
       <div
         className={"nav-mobile-menu" + (open ? " nav-mobile-menu--open" : "")}
       >
@@ -268,7 +275,17 @@ const Navbar = (props) => {
         >
           Quizzes
         </NavLink>
-
+        
+        <NavLink
+          to="/actor-match"
+          end
+          onClick={closeMenu}
+          className={({ isActive }) =>
+            "nav-mobile-link" + (isActive ? " nav-mobile-link--active" : "")
+          }
+        >
+          Actor Match
+        </NavLink>
         {user ? (
           <>
             <NavLink
