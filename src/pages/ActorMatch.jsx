@@ -4,6 +4,9 @@ import { findLookalike } from "../services/faceMatchService";
 import "./ActorMatch.css";
 import "../ui/Button.css"; 
 
+
+
+
 export default function ActorMatch(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -25,23 +28,28 @@ export default function ActorMatch(props) {
     setLoading(true);
     setResult(null);
 
+   
+   
     try {
       const data = await findLookalike(selectedImage);
       setResult(data);
     } catch (error) {
-      console.error("Σφάλμα:", error);
-      alert("Κάτι πήγε στραβά με την αναζήτηση.");
+      console.error("Error:", error);
+      alert("Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
+
+
+
   return (
     <div className="actor-match-page">
       <Navbar user={props.user} onLogout={props.onLogout} />
       <div className="actor-match-container" style={{ paddingTop: "100px" }}>
-        <h1 className="title-text">Ποιος ηθοποιός είσαι;</h1>
-        <p className="subtitle">Ανέβασε μια φωτογραφία σου και το AI θα βρει τον διάσημο σωσία σου!</p>
+        <h1 className="title-text">Which actor are you?</h1>
+        <p className="subtitle">Upload a photo and our AI will find your lookalike!</p>
         <form className="upload-section" onSubmit={handleFindMatch}>
           <input 
             type="file" 
@@ -49,6 +57,9 @@ export default function ActorMatch(props) {
             onChange={handleImageChange} 
             className="file-input"
           />
+          
+          
+          
           {preview && (
             <div className="preview-container">
               <img src={preview} alt="Upload preview" className="preview-img" />
@@ -62,19 +73,23 @@ export default function ActorMatch(props) {
                 disabled={loading}
                 style={{ fontSize: "16px", padding: "10px 20px", cursor: "pointer" }}
               >
-                {loading ? "Ανάλυση..." : "Βρες τον σωσία μου!"}
+                {loading ? "Analyzing..." : "Find my lookalike!"}
               </button>
             </div>
           )}
         </form>
+        
+        
+        
+        
         {result && (
           <div className="result-section fade-in">
-            <h2>Μοιάζεις με: <span style={{color: "#40d6ff"}}>{result.name}</span></h2>
-            <p>Ποσοστό ομοιότητας: {result.confidence}%</p>
+            <h2>You look like: <span style={{color: "#40d6ff"}}>{result.name}</span></h2>
+            <p>Lookalike percentage: {result.confidence}%</p>
             {result.image ? (
               <img src={result.image} alt={result.name} className="result-img" />
             ) : (
-              <p>Δεν βρέθηκε φωτογραφία του ηθοποιού.</p>
+              <p>No actor's photo was found.</p>
             )}
           </div>
         )}
