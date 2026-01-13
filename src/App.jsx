@@ -15,6 +15,8 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import QuizGame from "./pages/QuizGame";
 import FeedPage from "./pages/FeedPage";
+import TvseriesPage from "./pages/TvseriesPage";
+import SeriePage from "./pages/SeriePage";
 
 import { useEffect, useState } from "react";
 import {
@@ -70,7 +72,10 @@ function AppContent() {
         <Routes>
           <Route path="/feed" element={<FeedPage />} />
 
-          <Route path="/analytics" element={<StatsPage user={user} onLogout={handleLogout} />} />
+          <Route
+            path="/analytics"
+            element={<StatsPage user={user} onLogout={handleLogout} />}
+          />
 
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route
@@ -78,9 +83,19 @@ function AppContent() {
             element={<Homepage user={user} onLogout={handleLogout} />}
           />
           <Route
+            path="/tv"
+            element={<TvseriesPage user={user} onLogout={handleLogout} />}
+          />
+
+          <Route
             path="/movie/:id"
             element={<MoviePage user={user} onLogout={handleLogout} />}
           />
+          <Route
+            path="/tv/:id"
+            element={<SeriePage user={user} onLogout={handleLogout} />}
+          />
+
           <Route path="/login" element={<LoginPage onLogin={setUser} />} />
           <Route
             path="/profile"
@@ -92,7 +107,7 @@ function AppContent() {
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:category" element={<QuizGame />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="*" element={<Navigate replace to="/" />} />          
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </main>
     </>
