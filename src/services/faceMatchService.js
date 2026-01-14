@@ -6,6 +6,8 @@ export async function findLookalike(imageFile) {
   
  
   const res = await fetch(`${API_BASE_URL}/movies/genre?genreId=28&page=${randomPage}`);
+ 
+ 
   const data = await res.json();
   
  
@@ -16,11 +18,15 @@ export async function findLookalike(imageFile) {
 
   
   const castRes = await fetch(`${API_BASE_URL}/movie/cast?id=${randomMovie.id}`);
+ 
+ 
   const castData = await castRes.json();
 
   
+  
   const actors = castData.cast.filter(actor => actor.profile_path);
 
+  
   
   if (!actors || actors.length === 0) {
     return {
@@ -31,9 +37,9 @@ export async function findLookalike(imageFile) {
   }
 
  
-  const match = actors[Math.floor(Math.random() * actors.length)];
-
   
+  
+ const match = actors[Math.floor(Math.random() * actors.length)];
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
