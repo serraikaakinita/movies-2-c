@@ -116,7 +116,7 @@ const Navbar = (props) => {
                 "nav-link" + (isActive ? " nav-link--active" : "")
               }
             >
-              TV Series
+              Series
             </NavLink>
           </li>
 
@@ -145,7 +145,7 @@ const Navbar = (props) => {
                 "nav-link" + (isActive ? " nav-link--active" : "")
               }
             >
-              Actor Match
+              Match
             </NavLink>
           </li>
         </ul>
