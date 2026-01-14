@@ -17,6 +17,7 @@ import QuizGame from "./pages/QuizGame";
 import FeedPage from "./pages/FeedPage";
 import TvseriesPage from "./pages/TvseriesPage";
 import SeriePage from "./pages/SeriePage";
+import ActorMatch from "./pages/ActorMatch";
 
 import { useEffect, useState } from "react";
 import {
@@ -108,6 +109,11 @@ function AppContent() {
           <Route path="/quiz/:category" element={<QuizGame />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<Navigate replace to="/" />} />
+          <Route path="/feed" element={<FeedPage />} />
+          <Route
+            path="/actor-match"
+            element={<ActorMatch user={user} onLogout={handleLogout} />}
+          />
         </Routes>
       </main>
     </>
