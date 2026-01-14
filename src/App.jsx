@@ -18,9 +18,6 @@ import FeedPage from "./pages/FeedPage";
 import TvseriesPage from "./pages/TvseriesPage";
 import SeriePage from "./pages/SeriePage";
 import ActorMatch from "./pages/ActorMatch";
-import ActorMatch from "./pages/ActorMatch";
-import TvseriesPage from "./pages/TvseriesPage";
-import SeriePage from "./pages/SeriePage";
 
 import { useEffect, useState } from "react";
 import {

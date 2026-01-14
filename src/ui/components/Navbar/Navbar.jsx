@@ -146,10 +146,6 @@ const Navbar = (props) => {
               }
             >
               Actor Match
-
-          <li className="nav-item">
-            <NavLink to="/analytics" className="nav-links">
-              Analytics
             </NavLink>
           </li>
         </ul>
