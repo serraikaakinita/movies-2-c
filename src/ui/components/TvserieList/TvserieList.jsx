@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import Rowpost from "../Rowpost/Rowpost";
 import TvserieCard from "./TvserieCard";
+import RowpostTv from "../Rowpost/RowpostTv";
 // import Bannertv from "../Banner/Bannertv";
 
 const TvserieList = () => {
@@ -79,9 +80,9 @@ const TvserieList = () => {
         ))}
       </div> */}
 
-      <Rowpost url={`tv/genre?genreId=35`} title="Comedy" />
+      <RowpostTv url={`tv/genre?genreId=35`} title="Comedy" />
 
-      <Rowpost url={`tv/genre?genreId=10759`} title="Action" />
+      <RowpostTv url={`tv/genre?genreId=10759`} title="Action" />
     </section>
   );
 };

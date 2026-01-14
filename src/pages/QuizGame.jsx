@@ -18,28 +18,28 @@ function QuizGame() {
     async function loadQuiz() {
       try {
         const res = await fetch(
-          `http://movies2cbackend-production.up.railway.app/api/quizzes/category/${encodeURIComponent(category)}`
+          `https://movies2cbackend-production.up.railway.app/api/quizzes/category/${category}`
         );
         const quizzes = await res.json();
-        
+
         if (quizzes.length > 0) {
           setQuiz(quizzes[0]);
         } else {
-          console.error('No quiz found for category:', category);
+          console.error("No quiz found for category:", category);
         }
       } catch (err) {
-        console.error('Error loading quiz:', err);
+        console.error("Error loading quiz:", err);
       } finally {
         setLoading(false);
       }
     }
-    
+
     loadQuiz();
   }, [category]);
 
   useEffect(() => {
     if (!quiz || showResults) return;
-    
+
     const countdown = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
@@ -50,7 +50,7 @@ function QuizGame() {
         return prev - 1;
       });
     }, 1000);
-    
+
     return () => clearInterval(countdown);
   }, [quiz, showResults]);
 
@@ -69,14 +69,15 @@ function QuizGame() {
 
   const handleAnswer = (optionIndex) => {
     if (selectedAnswer !== null) return;
-    
+
     setSelectedAnswer(optionIndex);
-    
-    const isCorrect = optionIndex === quiz.questions[currentQuestion].correctOptionIndex;
+
+    const isCorrect =
+      optionIndex === quiz.questions[currentQuestion].correctOptionIndex;
     if (isCorrect) {
       setScore(score + 1);
     }
-    
+
     setTimeout(() => {
       if (currentQuestion < quiz.questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
@@ -90,7 +91,8 @@ function QuizGame() {
 
   const getOptionClass = (index) => {
     if (selectedAnswer === null) return "";
-    if (index === quiz.questions[currentQuestion].correctOptionIndex) return "correct";
+    if (index === quiz.questions[currentQuestion].correctOptionIndex)
+      return "correct";
     if (index === selectedAnswer) return "wrong";
     return "";
   };
@@ -119,7 +121,9 @@ function QuizGame() {
         <div className="quiz-error">
           <h2>Quiz not found</h2>
           <p>Could not load quiz for category: {category}</p>
-          <button onClick={() => navigate('/quizzes')}>Back to Categories</button>
+          <button onClick={() => navigate("/quizzes")}>
+            Back to Categories
+          </button>
         </div>
       </div>
     );
@@ -129,7 +133,7 @@ function QuizGame() {
     const percentage = calculateScorePercentage();
     const isExcellent = percentage >= 80;
     const isGood = percentage >= 60;
-    
+
     return (
       <div className="quiz-game">
         <Navbar />
@@ -140,25 +144,35 @@ function QuizGame() {
               <h2>{quiz.title}</h2>
               <div className="score-display">
                 <div className="score-circle">
-                  <span className="score-number">{score}/{quiz.questions.length}</span>
+                  <span className="score-number">
+                    {score}/{quiz.questions.length}
+                  </span>
                   <span className="score-percentage">{percentage}%</span>
                 </div>
                 <div className="score-message">
                   {isExcellent && "🏆 Excellent! You're a movie master!"}
-                  {isGood && !isExcellent && "👍 Good job! You know your movies!"}
+                  {isGood &&
+                    !isExcellent &&
+                    "👍 Good job! You know your movies!"}
                   {!isGood && "📚 Keep watching movies and try again!"}
                 </div>
               </div>
-              
+
               <div className="results-breakdown">
                 <h3>Quiz Details:</h3>
-                <p><strong>Category:</strong> {quiz.category}</p>
-                <p><strong>Difficulty:</strong> Mixed</p>
-                <p><strong>Questions:</strong> {quiz.questions.length}</p>
+                <p>
+                  <strong>Category:</strong> {quiz.category}
+                </p>
+                <p>
+                  <strong>Difficulty:</strong> Mixed
+                </p>
+                <p>
+                  <strong>Questions:</strong> {quiz.questions.length}
+                </p>
               </div>
-              
+
               <div className="results-actions">
-                <button 
+                <button
                   className="play-again-btn"
                   onClick={() => {
                     setCurrentQuestion(0);
@@ -170,9 +184,9 @@ function QuizGame() {
                 >
                   ↻ Play Again
                 </button>
-                <button 
+                <button
                   className="back-btn"
-                  onClick={() => navigate('/quizzes')}
+                  onClick={() => navigate("/quizzes")}
                 >
                   ← Back to Categories
                 </button>
@@ -190,18 +204,20 @@ function QuizGame() {
   return (
     <div className="quiz-game">
       <Navbar />
-      
+
       <div className="quiz-container">
         <div className="quiz-header">
           <div className="quiz-info">
             <h1>{quiz.title}</h1>
             <p className="quiz-description">{quiz.description}</p>
           </div>
-          
+
           <div className="quiz-stats">
             <div className="stat-box">
               <span className="stat-label">Question</span>
-              <span className="stat-value">{currentQuestion + 1}/{quiz.questions.length}</span>
+              <span className="stat-value">
+                {currentQuestion + 1}/{quiz.questions.length}
+              </span>
             </div>
             <div className="stat-box">
               <span className="stat-label">Score</span>
@@ -209,7 +225,9 @@ function QuizGame() {
             </div>
             <div className="stat-box timer-box">
               <span className="stat-label">Time</span>
-              <span className={`stat-value ${timer <= 10 ? 'timer-warning' : ''}`}>
+              <span
+                className={`stat-value ${timer <= 10 ? "timer-warning" : ""}`}
+              >
                 {timer}s
               </span>
             </div>
@@ -217,20 +235,22 @@ function QuizGame() {
         </div>
 
         <div className="progress-bar">
-          <div 
-            className="progress-fill" 
+          <div
+            className="progress-fill"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
 
         <div className="question-card">
           <div className="question-header">
-            <span className="question-number">Question {currentQuestion + 1}</span>
+            <span className="question-number">
+              Question {currentQuestion + 1}
+            </span>
             <span className="question-difficulty">{question.difficulty}</span>
           </div>
-          
+
           <h2 className="question-text">{question.questionText}</h2>
-          
+
           <div className="options-grid">
             {question.options.map((option, index) => (
               <button
@@ -243,13 +263,14 @@ function QuizGame() {
                   {String.fromCharCode(65 + index)}
                 </span>
                 <span className="option-text">{option}</span>
-                {selectedAnswer !== null && index === question.correctOptionIndex && (
-                  <span className="correct-indicator">✓</span>
-                )}
+                {selectedAnswer !== null &&
+                  index === question.correctOptionIndex && (
+                    <span className="correct-indicator">✓</span>
+                  )}
               </button>
             ))}
           </div>
-          
+
           {selectedAnswer !== null && (
             <div className="explanation">
               {selectedAnswer === question.correctOptionIndex ? (
@@ -258,7 +279,8 @@ function QuizGame() {
                 </div>
               ) : (
                 <div className="wrong-explanation">
-                  ❌ The correct answer is: {question.options[question.correctOptionIndex]}
+                  ❌ The correct answer is:{" "}
+                  {question.options[question.correctOptionIndex]}
                 </div>
               )}
             </div>
@@ -266,19 +288,19 @@ function QuizGame() {
         </div>
 
         <div className="quiz-navigation">
-          <button 
-            className="nav-btn"
-            onClick={() => navigate('/quizzes')}
-          >
+          <button className="nav-btn" onClick={() => navigate("/quizzes")}>
             ← Exit Quiz
           </button>
           <div className="question-indicator">
             {quiz.questions.map((_, idx) => (
-              <div 
+              <div
                 key={idx}
                 className={`indicator-dot ${
-                  idx === currentQuestion ? 'active' : 
-                  idx < currentQuestion ? 'answered' : ''
+                  idx === currentQuestion
+                    ? "active"
+                    : idx < currentQuestion
+                    ? "answered"
+                    : ""
                 }`}
               ></div>
             ))}

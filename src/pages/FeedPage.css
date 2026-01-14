@@ -1,0 +1,57 @@
+/* src/pages/FeedPage.css */
+
+.feed-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.create-post {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.create-post textarea {
+  resize: none;
+  height: 80px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.create-post button {
+  align-self: flex-end;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.post-card {
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 10px;
+  background: #111;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.post-card img {
+  width: 100%;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+.post-content {
+  margin-top: 10px;
+}

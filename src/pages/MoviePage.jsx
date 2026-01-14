@@ -151,7 +151,7 @@ function MoviePage(props) {
                 onOpenTrailer={() => setIsTrailerOpen(true)}
               />
             ) : selectedTab === "comments" ? (
-              <UserComments />
+              <UserComments movieId={id} user={props.user} />
             ) : (
               <MovieCastView members={members} />
             )}
@@ -349,6 +349,7 @@ function UserComments({ movieId, user }) {
       sentiment,
       createdAt: new Date().toISOString(),
       replies: [],
+      createdAt: new Date().toISOString(),
     };
 
     const updated = [newComment, ...comments];
@@ -508,6 +509,10 @@ function UserComments({ movieId, user }) {
                   <div>{r.text}</div>
                 </div>
               ))}
+              <div style={{ fontSize: 12, opacity: 0.75 }}>
+                <b>{c.user}</b> • {new Date(c.createdAt).toLocaleString()}
+              </div>
+              <div style={{ marginTop: 6 }}>{c.text}</div>
             </div>
           ))
         )}
