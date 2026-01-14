@@ -189,9 +189,331 @@ function MovieDetailsView({ movie, trailerKey, onOpenTrailer }) {
     </Row>
   );
 }
+//sunaisthima
+function detectSentiment(text) {
+  const t = text.toLowerCase();
 
-function UserComments() {
-  return <div>test</div>;
+  const positive = [
+    "καλη",
+    "καλή",
+    "τελεια",
+    "τέλεια",
+    "ωραια",
+    "ωραία",
+    "φοβερη",
+    "φοβερή",
+    "γαματη",
+    "γαμάτη",
+    "υπεροχη",
+    "υπέροχη",
+    "απιστευτη",
+    "απίστευτη",
+    "καταπληκτικη",
+    "καταπληκτική",
+    "αριστουργημα",
+    "αριστούργημα",
+    "μου αρεσε",
+    "μου άρεσε",
+    "αγαπησα",
+    "αγάπησα",
+    "κορυφαια",
+    "κορυφαία",
+    "τοπ",
+    "αξιζει",
+    "αξίζει",
+    "ο μπρο μαγειρεψε",
+
+    "good",
+    "great",
+    "amazing",
+    "awesome",
+    "excellent",
+    "perfect",
+    "fantastic",
+    "loved it",
+    "love it",
+    "masterpiece",
+    "incredible",
+    "brilliant",
+    "top",
+    "worth it",
+    "best",
+    "enjoyed",
+    "liked it",
+    "10/10",
+    "9/10",
+    "8/10",
+    "gamaei",
+    "o bro mageirepse",
+  ];
+
+  const negative = [
+    "χαλια",
+    "χάλια",
+    "βαρετη",
+    "βαρετή",
+    "αθλια",
+    "άθλια",
+    "σκουπιδι",
+    "σκουπίδι",
+    "απαραδεκτη",
+    "απαράδεκτη",
+    "κακη",
+    "κακή",
+    "απογοητευση",
+    "απογοήτευση",
+    "δεν μου αρεσε",
+    "δεν μου άρεσε",
+    "χασιμο χρονου",
+    "χάσιμο χρόνου",
+    "κουραστικη",
+    "κουραστική",
+    "ανοησια",
+    "ανοησία",
+    "απαίσια",
+    "οτι χειροτερο εχω δει",
+
+    "bad",
+    "terrible",
+    "awful",
+    "boring",
+    "waste of time",
+    "hated it",
+    "hate it",
+    "disappointing",
+    "worst",
+    "poor",
+    "stupid",
+    "useless",
+    "trash",
+    "garbage",
+    "mid",
+    "gtp",
+    "0/10",
+    "1/10",
+    "2/10",
+    "3/10",
+    "4/10",
+  ];
+
+  const hasPositive = positive.some((word) => t.includes(word));
+  const hasNegative = negative.some((word) => t.includes(word));
+
+  if (hasPositive && !hasNegative) return "positive";
+  if (hasNegative && !hasPositive) return "negative";
+  return "neutral";
+}
+
+function UserComments({ movieId, user }) {
+  const [comments, setComments] = useState([]);
+  const [text, setText] = useState("");
+  const [replyText, setReplyText] = useState("");
+  const [replyTo, setReplyTo] = useState(null); // comment id
+
+  const username =
+    user?.username ||
+    user?.name ||
+    user?.email ||
+    user?.user?.username ||
+    user?.user?.name ||
+    user?.user?.email ||
+    "User";
+
+  const commentsKey = movieId ? `comments_${movieId}` : null;
+
+  // load comments for this movie
+  useEffect(() => {
+    if (!commentsKey) return;
+    const saved = localStorage.getItem(commentsKey);
+    if (saved) setComments(JSON.parse(saved));
+    else setComments([]);
+  }, [commentsKey]);
+
+  function saveComments(newComments) {
+    if (!commentsKey) return;
+    localStorage.setItem(commentsKey, JSON.stringify(newComments));
+    setComments(newComments);
+  }
+
+  function submit(e) {
+    e.preventDefault();
+    const clean = text.trim();
+    if (!clean) return;
+
+    const sentiment = detectSentiment(clean);
+
+    const newComment = {
+      id: Date.now(),
+      text: clean,
+      user: username,
+      sentiment,
+      createdAt: new Date().toISOString(),
+      replies: [],
+    };
+
+    const updated = [newComment, ...comments];
+    saveComments(updated);
+    setText("");
+  }
+  function submitReply(commentId) {
+    const clean = replyText.trim();
+    if (!clean) return;
+
+    const updatedComments = comments.map((c) => {
+      if (c.id !== commentId) return c;
+
+      return {
+        ...c,
+        replies: [
+          {
+            id: Date.now(),
+            user: username,
+            text: clean,
+            createdAt: new Date().toISOString(),
+          },
+          ...(c.replies || []),
+        ],
+      };
+    });
+
+    saveComments(updatedComments);
+    setReplyText("");
+    setReplyTo(null);
+  }
+
+  return (
+    <div style={{ margin: "1rem" }}>
+      <form onSubmit={submit} style={{ display: "flex", gap: "0.5rem" }}>
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Write a comment..."
+          style={{
+            flex: 1,
+            padding: "10px",
+            borderRadius: "8px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "rgba(255,255,255,0.06)",
+            color: "white",
+            outline: "none",
+          }}
+          maxLength={300}
+        />
+        <button
+          type="submit"
+          style={{
+            padding: "10px 14px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          Post
+        </button>
+      </form>
+
+      <div style={{ marginTop: "1rem" }}>
+        {comments.length === 0 ? (
+          <div style={{ opacity: 0.7 }}>No comments yet.</div>
+        ) : (
+          comments.map((c) => (
+            <div
+              key={c.id}
+              style={{
+                marginTop: "0.75rem",
+                padding: "10px",
+                borderRadius: "10px",
+                background: "rgba(255,255,255,0.06)",
+              }}
+            >
+              {/* HEADER */}
+              <div style={{ fontSize: 12, opacity: 0.8 }}>
+                <b>{c.user}</b> • {new Date(c.createdAt).toLocaleString()}
+                {c.sentiment === "positive" && (
+                  <span style={{ marginLeft: 8, color: "lightgreen" }}>
+                    liked it
+                  </span>
+                )}
+                {c.sentiment === "negative" && (
+                  <span style={{ marginLeft: 8, color: "salmon" }}>
+                    disliked it
+                  </span>
+                )}
+              </div>
+
+              {/* COMMENT TEXT */}
+              <div style={{ marginTop: 6 }}>{c.text}</div>
+
+              {/* REPLY BUTTON */}
+              <button
+                style={{
+                  marginTop: 6,
+                  fontSize: 12,
+                  background: "none",
+                  border: "none",
+                  color: "#8ab4f8",
+                  cursor: "pointer",
+                }}
+                onClick={() => setReplyTo(c.id)}
+              >
+                Reply
+              </button>
+
+              {/* REPLY INPUT */}
+              {replyTo === c.id && (
+                <div style={{ marginTop: 6, marginLeft: 20 }}>
+                  <input
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    placeholder="Write a reply..."
+                    style={{
+                      width: "100%",
+                      padding: "6px",
+                      borderRadius: "6px",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      background: "rgba(255,255,255,0.05)",
+                      color: "white",
+                    }}
+                  />
+                  <button
+                    onClick={() => submitReply(c.id)}
+                    style={{
+                      marginTop: 4,
+                      padding: "4px 10px",
+                      borderRadius: "6px",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
+              )}
+
+              {c.replies?.map((r) => (
+                <div
+                  key={r.id}
+                  style={{
+                    marginTop: 6,
+                    marginLeft: 20,
+                    padding: "6px",
+                    borderRadius: "8px",
+                    background: "rgba(255,255,255,0.04)",
+                    fontSize: 13,
+                  }}
+                >
+                  <div style={{ fontSize: 11, opacity: 0.75 }}>
+                    <b>{r.user}</b> • {new Date(r.createdAt).toLocaleString()}
+                  </div>
+                  <div>{r.text}</div>
+                </div>
+              ))}
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
 }
 
 function MovieCastView({ members }) {
