@@ -13,9 +13,10 @@ import QuizzesPage from "./pages/QuizzesPage";
 import QuizPage from "./pages/QuizPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import TestQuizzes from "./pages/TestQuizzes";
 import QuizGame from "./pages/QuizGame";
 import FeedPage from "./pages/FeedPage";
+import TvseriesPage from "./pages/TvseriesPage";
+import SeriePage from "./pages/SeriePage";
 import ActorMatch from "./pages/ActorMatch";
 import { useEffect, useState } from "react";
 import {
@@ -26,6 +27,8 @@ import {
 } from "./services/authenticationService";
 import Navbar from "./ui/components/Navbar/Navbar";
 import { FavoritesProvider } from "./context/FavoritesContext";
+
+import StatsPage from "./pages/StatsPage";
 
 function AppContent() {
   const [user, setUser] = useState(() => {
@@ -69,15 +72,30 @@ function AppContent() {
         <Routes>
           <Route path="/feed" element={<FeedPage />} />
 
+          <Route
+            path="/analytics"
+            element={<StatsPage user={user} onLogout={handleLogout} />}
+          />
+
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route
             path="/home"
             element={<Homepage user={user} onLogout={handleLogout} />}
           />
           <Route
+            path="/tv"
+            element={<TvseriesPage user={user} onLogout={handleLogout} />}
+          />
+
+          <Route
             path="/movie/:id"
             element={<MoviePage user={user} onLogout={handleLogout} />}
           />
+          <Route
+            path="/tv/:id"
+            element={<SeriePage user={user} onLogout={handleLogout} />}
+          />
+
           <Route path="/login" element={<LoginPage onLogin={setUser} />} />
           <Route
             path="/profile"
@@ -88,14 +106,13 @@ function AppContent() {
           <Route path="/quizzes" element={<QuizzesPage />} />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:category" element={<QuizGame />} />
-          <Route path="/test-quizzes" element={<TestQuizzes />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<Navigate replace to="/" />} />
           <Route path="/feed" element={<FeedPage />} />
           <Route
-  path="/actor-match"
-  element={<ActorMatch user={user} onLogout={handleLogout} />}
-/>
+            path="/actor-match"
+            element={<ActorMatch user={user} onLogout={handleLogout} />}
+          />
         </Routes>
       </main>
     </>
