@@ -22,7 +22,6 @@ export default function FeedPage() {
     (async () => {
       const saved = await loadPosts();
 
-      // 🔧 μικρό "migration": αν παλιά posts δεν είχαν replies / likedBy / likesCount, τα συμπληρώνουμε
       const normalized = (Array.isArray(saved) ? saved : []).map((p) => ({
         ...p,
         likesCount: p?.likesCount ?? 0,
