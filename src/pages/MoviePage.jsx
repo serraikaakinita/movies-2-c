@@ -304,7 +304,7 @@ function detectSentiment(text) {
   return "neutral";
 }
 
-function UserComments({ movieId, user }) {
+function UserComments({ movieId, TvseriesId, user }) {
   const [comments, setComments] = useState([]);
   const [text, setText] = useState("");
   const [replyText, setReplyText] = useState("");
@@ -319,7 +319,11 @@ function UserComments({ movieId, user }) {
     user?.user?.email ||
     "User";
 
-  const commentsKey = movieId ? `comments_${movieId}` : null;
+  const commentsKey = movieId
+    ? `movie_comments_${movieId}`
+    : seriesId
+    ? `series_comments_${seriesId}`
+    : null;
 
   // load comments for this movie
   useEffect(() => {
