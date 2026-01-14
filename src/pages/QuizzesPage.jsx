@@ -16,7 +16,7 @@ function QuizzesPage() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('http://movies2cbackend-production.up.railway.app/api/quizzes/categories');
+        const res = await fetch(`http://movies2cbackend-production.up.railway.app/api/quizzes/categories`);
         const data = await res.json();
 
         const categoryIcons = {
@@ -69,7 +69,7 @@ function QuizzesPage() {
     async function fetchQuizzes() {
       try {
         const res = await fetch(
-          `http://localhost:8080/api/quizzes?title=${query}`,
+          `http://movies2cbackend-production.up.railway.app/api/quizzes?title=${query}`,
           { signal: controller.signal }
         );
 
@@ -161,7 +161,7 @@ function QuizzesPage() {
       <div className="content">
         <div className="header">
           <div className="search-bar-container">
-            <SearchBar query={query} setQuery={setQuery} />
+            {/* <SearchBar query={query} setQuery={setQuery} /> */}
           </div>
 
           {query.length > 0 ? (
