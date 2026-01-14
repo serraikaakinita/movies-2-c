@@ -151,7 +151,7 @@ function MoviePage(props) {
                 onOpenTrailer={() => setIsTrailerOpen(true)}
               />
             ) : selectedTab === "comments" ? (
-              <UserComments />
+              <UserComments movieId={id} user={props.user} />
             ) : (
               <MovieCastView members={members} />
             )}
@@ -190,8 +190,108 @@ function MovieDetailsView({ movie, trailerKey, onOpenTrailer }) {
   );
 }
 
-function UserComments() {
-  return <div>test</div>;
+function UserComments({ movieId, user }) {
+  const [comments, setComments] = useState([]);
+  const [text, setText] = useState("");
+
+  // Βρες ένα display name από το user σου (διάλεξε ό,τι υπάρχει)
+  const username =
+    user?.username ||
+    user?.name ||
+    user?.email ||
+    user?.user?.username ||
+    user?.user?.name ||
+    user?.user?.email ||
+    "User";
+
+  const commentsKey = movieId ? `comments_${movieId}` : null;
+
+  // load comments for this movie
+  useEffect(() => {
+    if (!commentsKey) return;
+    const saved = localStorage.getItem(commentsKey);
+    if (saved) setComments(JSON.parse(saved));
+    else setComments([]);
+  }, [commentsKey]);
+
+  function saveComments(newComments) {
+    if (!commentsKey) return;
+    localStorage.setItem(commentsKey, JSON.stringify(newComments));
+    setComments(newComments);
+  }
+
+  function submit(e) {
+    e.preventDefault();
+    const clean = text.trim();
+    if (!clean) return;
+
+    const newComment = {
+      id: Date.now(),
+      text: clean,
+      user: username,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updated = [newComment, ...comments];
+    saveComments(updated);
+    setText("");
+  }
+
+  return (
+    <div style={{ margin: "1rem" }}>
+      <form onSubmit={submit} style={{ display: "flex", gap: "0.5rem" }}>
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Write a comment..."
+          style={{
+            flex: 1,
+            padding: "10px",
+            borderRadius: "8px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "rgba(255,255,255,0.06)",
+            color: "white",
+            outline: "none",
+          }}
+          maxLength={300}
+        />
+        <button
+          type="submit"
+          style={{
+            padding: "10px 14px",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          Post
+        </button>
+      </form>
+
+      <div style={{ marginTop: "1rem" }}>
+        {comments.length === 0 ? (
+          <div style={{ opacity: 0.7 }}>No comments yet.</div>
+        ) : (
+          comments.map((c) => (
+            <div
+              key={c.id}
+              style={{
+                marginTop: "0.75rem",
+                padding: "10px",
+                borderRadius: "10px",
+                background: "rgba(255,255,255,0.06)",
+              }}
+            >
+              <div style={{ fontSize: 12, opacity: 0.75 }}>
+                <b>{c.user}</b> • {new Date(c.createdAt).toLocaleString()}
+              </div>
+              <div style={{ marginTop: 6 }}>{c.text}</div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
 }
 
 function MovieCastView({ members }) {
