@@ -1,15 +1,15 @@
 import React from "react";
-import "./MovieCard.css";
+import "../MovieList/MovieCard.css";
 import { useFavorites } from "../../../context/FavoritesContext";
 
-function MovieCard(props) {
+function TvserieCard(props) {
   const {
     id,
-    movieName,
-    moviePoster,
-    movieDate,
-    movieRating,
-    movieDescription,
+    seriesName,
+    seriesPoster,
+    seriesDate,
+    seriesRating,
+    seriesDescription,
   } = props;
 
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -22,11 +22,11 @@ function MovieCard(props) {
     try {
       await toggleFavorite({
         id,
-        title: movieName,
-        poster_path: moviePoster,
-        release_date: movieDate,
-        vote_average: movieRating,
-        overview: movieDescription,
+        title: seriesName,
+        poster_path: seriesPoster,
+        release_date: seriesDate,
+        vote_average: seriesRating,
+        overview: seriesDescription,
       });
     } catch (err) {
       alert(err.message || "Failed to update favourites");
@@ -34,14 +34,14 @@ function MovieCard(props) {
   };
 
   const truncatedDescription = React.useMemo(() => {
-    if (!movieDescription) return "";
-    const words = movieDescription.split(/\s+/);
-    if (words.length <= 50) return movieDescription;
+    if (!seriesDescription) return "";
+    const words = seriesDescription.split(/\s+/);
+    if (words.length <= 50) return seriesDescription;
     return words.slice(0, 50).join(" ") + "...";
-  }, [movieDescription]);
+  }, [seriesDescription]);
 
   return (
-    <a href={`/movie/:${id}`} className="movie_card">
+    <a href={`/tv/:${id}`} className="movie_card">
       <div className="movie_fav_icon_wrapper">
         <button
           className={`movie_fav_icon ${fav ? "movie_fav_icon--active" : ""}`}
@@ -54,18 +54,18 @@ function MovieCard(props) {
 
       <img
         src={
-          "https://media.themoviedb.org/t/p/w220_and_h330_face/" + moviePoster
+          "https://media.themoviedb.org/t/p/w220_and_h330_face/" + seriesPoster
         }
-        alt={movieName}
+        alt={seriesName}
         className="movie_poster"
       />
 
       <div className="movie_overlay">
-        <h3 className="movie_overlay_title">{movieName}</h3>
+        <h3 className="movie_overlay_title">{seriesName}</h3>
 
         <div className="movie_overlay_meta">
-          <span>{movieDate}</span>
-          <span>⭐ {movieRating}</span>
+          <span>{seriesDate}</span>
+          <span>⭐ {seriesRating}</span>
         </div>
 
         <p className="movie_overlay_description">{truncatedDescription}</p>
@@ -74,4 +74,4 @@ function MovieCard(props) {
   );
 }
 
-export default MovieCard;
+export default TvserieCard;

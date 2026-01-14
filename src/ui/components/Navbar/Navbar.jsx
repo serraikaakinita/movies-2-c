@@ -110,7 +110,7 @@ const Navbar = (props) => {
 
           <li>
             <NavLink
-              to="/tv-series"
+              to="/tv"
               end
               className={({ isActive }) =>
                 "nav-link" + (isActive ? " nav-link--active" : "")
@@ -140,6 +140,10 @@ const Navbar = (props) => {
               }
             >
               Actor Match
+
+          <li className="nav-item">
+            <NavLink to="/analytics" className="nav-links">
+              Analytics
             </NavLink>
           </li>
         </ul>
