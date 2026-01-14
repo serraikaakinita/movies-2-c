@@ -20,18 +20,25 @@ export default function ActorMatch(props) {
       setResult(null); 
     }
   };
-  const handleFindMatch = async (e) => {
+  
+  
+  
+  
+  
+const handleFindMatch = async (e) => {
     e.preventDefault();
-
     if (!selectedImage) return;
 
     setLoading(true);
     setResult(null);
 
-   
-   
     try {
       const data = await findLookalike(selectedImage);
+      
+
+      console.log("Data from service:", data); 
+  
+
       setResult(data);
     } catch (error) {
       console.error("Error:", error);
@@ -65,6 +72,10 @@ export default function ActorMatch(props) {
               <img src={preview} alt="Upload preview" className="preview-img" />
             </div>
           )}
+          
+          
+          
+          
           {selectedImage && (
             <div style={{ marginTop: "20px" }}>
               <button 
@@ -82,12 +93,19 @@ export default function ActorMatch(props) {
         
         
         
+        
         {result && (
           <div className="result-section fade-in">
             <h2>You look like: <span style={{color: "#40d6ff"}}>{result.name}</span></h2>
             <p>Lookalike percentage: {result.confidence}%</p>
             {result.image ? (
-              <img src={result.image} alt={result.name} className="result-img" />
+             <img 
+             src={result.image} 
+             alt={result.name} 
+             className="result-img" 
+             referrerPolicy="no-referrer"
+             crossOrigin="anonymous"
+             />
             ) : (
               <p>No actor's photo was found.</p>
             )}
