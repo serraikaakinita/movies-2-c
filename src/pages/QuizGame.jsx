@@ -18,7 +18,7 @@ function QuizGame() {
     async function loadQuiz() {
       try {
         const res = await fetch(
-          `http://movies2cbackend-production.up.railway.app/api/quizzes/category/${category}`
+          `https://movies2cbackend-production.up.railway.app/api/quizzes/category/${category}`
         );
         const quizzes = await res.json();
 
