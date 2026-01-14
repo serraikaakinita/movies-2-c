@@ -18,6 +18,7 @@ import FeedPage from "./pages/FeedPage";
 import TvseriesPage from "./pages/TvseriesPage";
 import SeriePage from "./pages/SeriePage";
 import ActorMatch from "./pages/ActorMatch";
+import AIAssistant from "./ui/components/AIAssistant";
 
 import { useEffect, useState } from "react";
 import {
@@ -116,6 +117,7 @@ function AppContent() {
           />
         </Routes>
       </main>
+      <AIAssistant />
     </>
   );
 }
