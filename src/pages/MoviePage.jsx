@@ -163,18 +163,20 @@ function MoviePage(props) {
                 </div>
               </Row>
             </Row>
-            {selectedTab === "details" ? (
-              <MovieDetailsView
-                movie={movie}
-                trailerKey={trailerKey}
-                onOpenTrailer={() => setIsTrailerOpen(true)}
-                similarMovies={similarMovies}
-              />
-            ) : selectedTab === "comments" ? (
-              <UserComments movieId={id} user={props.user} />
-            ) : (
-              <MovieCastView members={members} />
-            )}
+            <div className="movie_box_content">
+              {selectedTab === "details" ? (
+                <MovieDetailsView
+                  movie={movie}
+                  trailerKey={trailerKey}
+                  onOpenTrailer={() => setIsTrailerOpen(true)}
+                  similarMovies={similarMovies}
+                />
+              ) : selectedTab === "comments" ? (
+                <UserComments movieId={id} user={props.user} />
+              ) : (
+                <MovieCastView members={members} />
+              )}
+            </div>
           </div>
         </Row>
       </Row>
