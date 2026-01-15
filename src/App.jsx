@@ -106,7 +106,10 @@ function AppContent() {
               user ? <Profile user={user} /> : <Navigate replace to="/login" />
             }
           />
-          <Route path="/quizzes" element={<QuizzesPage />} />
+          <Route
+            path="/quizzes"
+            element={<QuizzesPage user={user} onLogout={handleLogout} />}
+          />
           <Route path="/quiz" element={<QuizPage />} />
           <Route path="/quiz/:category" element={<QuizGame />} />
           <Route path="/signup" element={<SignupPage />} />
