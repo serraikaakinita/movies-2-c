@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 import "./MoviePage.css";
 import Row from "../ui/Row";
 import Navbar from "../ui/components/Navbar/Navbar";
@@ -16,6 +16,7 @@ function MoviePage(props) {
   //
   const [selectedTab, setSelectedTab] = useState("details");
   const [query, setQuery] = useState("");
+  const [similarMovies, setSimilarMovies] = useState([]);
 
   const [trailerKey, setTrailerKey] = useState(null);
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
@@ -79,6 +80,24 @@ function MoviePage(props) {
 
     if (!id) return;
     getTrailer();
+  }, [id]);
+
+  useEffect(() => {
+    async function getSimilarMovies() {
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=d812c9240d5a77043826e7d1b7e36a19&language=en-US&page=1`
+        );
+        const data = await res.json();
+        setSimilarMovies(data.results || []);
+      } catch (e) {
+        console.log("Similar movies fetch error:", e);
+        setSimilarMovies([]);
+      }
+    }
+
+    if (!id) return;
+    getSimilarMovies();
   }, [id]);
 
   return (
@@ -149,6 +168,7 @@ function MoviePage(props) {
                 movie={movie}
                 trailerKey={trailerKey}
                 onOpenTrailer={() => setIsTrailerOpen(true)}
+                similarMovies={similarMovies}
               />
             ) : selectedTab === "comments" ? (
               <UserComments movieId={id} user={props.user} />
@@ -163,7 +183,7 @@ function MoviePage(props) {
 }
 export default MoviePage;
 
-function MovieDetailsView({ movie, trailerKey, onOpenTrailer }) {
+function MovieDetailsView({ movie, trailerKey, onOpenTrailer, similarMovies }) {
   return (
     <Row type="vertical" content="center" gap="2rem" margin="1rem">
       <Row type="horizontal" gap="1rem">
@@ -186,9 +206,44 @@ function MovieDetailsView({ movie, trailerKey, onOpenTrailer }) {
       </Button>
 
       {!trailerKey && <p>No trailer available.</p>}
+      <SimilarMovies movies={similarMovies} />
     </Row>
   );
 }
+
+function SimilarMovies({ movies }) {
+  const top = (movies || []).filter((m) => m.poster_path).slice(0, 10);
+
+  return (
+    <div style={{ width: "100%", marginTop: "1rem" }}>
+      <h3 style={{ marginBottom: "0.75rem" }}>Similar movies</h3>
+
+      {top.length === 0 ? (
+        <div style={{ opacity: 0.7 }}>No recommendations available.</div>
+      ) : (
+        <div className="similar_grid">
+          {top.map((m) => (
+            <Link
+              key={m.id}
+              to={`/movie/${m.id}`}
+              className="similar_card"
+              style={{ textDecoration: "none", color: "inherit" }}
+              title={m.title}
+            >
+              <img
+                className="similar_poster"
+                src={`https://image.tmdb.org/t/p/w185${m.poster_path}`}
+                alt={m.title}
+              />
+              <div className="similar_title">{m.title}</div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 //sunaisthima
 function detectSentiment(text) {
   const t = text.toLowerCase();
@@ -526,9 +581,15 @@ function MovieCastView({ members }) {
       <Row type="horizontal" gap="1rem">
         <h1>Actors</h1>
       </Row>
+
       <Row type="horizontal" gap="2rem" margin="0.1rem">
         {members.cast?.slice(0, 5).map((cast) => (
-          <div key={cast.id} className="actor_container">
+          <Link
+            key={cast.id}
+            to={`/person/${cast.id}`}
+            className="actor_container"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <img
               className="actor_image"
               src={
@@ -539,12 +600,14 @@ function MovieCastView({ members }) {
               alt={cast.name}
             />
             <h4>{cast.name}</h4>
-          </div>
+          </Link>
         ))}
       </Row>
+
       <Row type="horizontal" gap="2rem" margin="0.1rem">
         <h1>Directors</h1>
       </Row>
+
       <Row type="horizontal" gap="1rem" margin="0.1rem">
         {members.crew?.slice(0, 3).map((crew, i) => (
           <div key={crew.name}>
