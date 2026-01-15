@@ -4,7 +4,7 @@ import Navbar from "../ui/components/Navbar/Navbar";
 import SearchBar from "../ui/components/SearchBar/SearchBar";
 import "./QuizzesPage.css";
 
-function QuizzesPage() {
+function QuizzesPage(props) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [quizzes, setQuizzes] = useState([]);
@@ -136,7 +136,12 @@ function QuizzesPage() {
 
   return (
     <div className="quizzes-page">
-      <Navbar query={query} setQuery={setQuery} />
+      <Navbar
+        user={props.user}
+        onLogout={props.onLogout}
+        query={query}
+        setQuery={setQuery}
+      />
       <div className="particles">
         {[...Array(15)].map((_, i) => (
           <div
