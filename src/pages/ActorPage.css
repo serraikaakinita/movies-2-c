@@ -1,0 +1,78 @@
+.actor_display_image {
+  width: 280px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.actor_name {
+  margin: 0;
+}
+
+.actor_subtitle {
+  opacity: 0.85;
+}
+
+.actor_meta {
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.actor_bio_box {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.actor_bio {
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.knownfor_box {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.knownfor_hint {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.knownfor_grid {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.knownfor_card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.knownfor_poster {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.knownfor_title {
+  font-size: 0.9rem;
+  text-align: center;
+  opacity: 0.95;
+}
+
+.actor_loading,
+.actor_error {
+  padding: 2rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.knownfor_empty {
+  opacity: 0.8;
+  padding: 0.75rem 0;
+}

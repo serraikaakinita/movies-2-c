@@ -19,6 +19,7 @@ import TvseriesPage from "./pages/TvseriesPage";
 import SeriePage from "./pages/SeriePage";
 import ActorMatch from "./pages/ActorMatch";
 import AIAssistant from "./ui/components/AIAssistant";
+import ActorPage from "./pages/ActorPage";
 
 import { useEffect, useState } from "react";
 import {
@@ -114,6 +115,10 @@ function AppContent() {
           <Route
             path="/actor-match"
             element={<ActorMatch user={user} onLogout={handleLogout} />}
+          />
+          <Route
+            path="/person/:id"
+            element={<ActorPage user={user} onLogout={handleLogout} />}
           />
         </Routes>
       </main>
