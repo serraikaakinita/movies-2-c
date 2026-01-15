@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loadPosts, savePosts } from "../services/localFeedService";
+import { loadPosts, savePosts } from "../services/LocalFeedService";
 import { getStoredUser } from "../services/authenticationService";
 
 export default function FeedPage() {
